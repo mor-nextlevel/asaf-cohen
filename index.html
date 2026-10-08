@@ -4,34 +4,530 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>אסף כהן</title>
+<title>DROP 21 | אסף כהן</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;800&display=swap" rel="stylesheet">
-<style>
-  :root { --ink: #16131c; --soft: #6d6878; --line: #e9e6ee; --accent: #d946a6; --bg: #fbfaf8; }
-  * { box-sizing: border-box; margin: 0; }
-  body {
-    min-height: 100svh; display: grid; place-items: center; padding: 24px 16px;
-    background: var(--bg); color: var(--ink);
-    font-family: "Heebo", system-ui, sans-serif; -webkit-font-smoothing: antialiased;
-  }
-  main { width: 100%; max-width: 520px; text-align: center; }
-  .tag {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-size: 13px; font-weight: 500; color: var(--soft);
-    padding: 6px 14px; border: 1px solid var(--line); border-radius: 999px; background: #fff;
-  }
-  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
-  h1 { font-size: clamp(34px, 8vw, 52px); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin: 22px 0 14px; }
-  p { font-size: 18px; line-height: 1.6; color: var(--soft); text-wrap: balance; }
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="lp.css">
+<link rel="stylesheet" href="asaf.css">
 </head>
-<body>
-  <main>
-    <span class="tag"><span class="dot"></span>נקסט לבל</span>
-    <h1>המרחב של אסף כהן</h1>
-    <p>כאן ייבנה הדף הראשון.<br>כל שינוי שאחד מאיתנו שומר עולה לכאן תוך דקה.</p>
-  </main>
+<body class="no-js">
+<div id="spot"></div>
+<main>
+
+<!-- ============ 1 · HERO ============ -->
+<section class="hero" id="s-hero">
+  <div class="hero__grid"></div><div class="hero__beam"></div>
+  <div class="wrap hero__in">
+    <div class="seen">
+      <div class="marquee"><div class="marquee__track" id="seenTrack">
+        <img class="sq" src="assets/logos/burningman-m.webp" alt="Burning Man" width="129" height="240">
+        <img class="sq" src="assets/logos/pacha-m.webp" alt="Pacha" width="244" height="240">
+        <img class="wide" src="assets/logos/flydance-m.webp" alt="Fly-Dance" width="638" height="240">
+        <img class="sq" src="assets/logos/tomorrowland-w-m.webp" alt="Tomorrowland" width="211" height="240">
+        <img src="assets/logos/coachella-m.webp" alt="Coachella" width="503" height="240">
+        <img src="assets/logos/ultra-w-m.webp" alt="Ultra" width="296" height="240">
+        <img src="assets/logos/edc-m.webp" alt="EDC" width="413" height="240">
+        <img class="sq" src="assets/logos/maccabi-m.webp" alt="Maccabi House" width="190" height="240">
+      </div></div>
+    </div>
+    <div class="hero__cols">
+      <div class="hero__copy">
+        <p class="hero__kicker">למוזיקאים ודיג׳יים שרוצים להוציא את הטראק הראשון שלהם…</p>
+        <h1 class="rise">איך לקחת כל שיר שאתם אוהבים ולהפוך אותו לטראק משלך שיכול להתנגן ברחבות בישראל ובעולם ולהרקיד אלפי אנשים</h1>
+        <p class="hero__sub">תוך 21 יום מהמחשב שלך בבית<br>בלי לקרוא תווים, בלי ידע בהפקה ובלי לקנות ציוד<br>ובלי ידע קודם במוזיקה</p>
+        <a class="btn" href="#s-final">אני בפנים, פתח לי גישה 🎧</a>
+      </div>
+      <div class="portrait">
+        <span class="glow"></span><span class="ring r2"><i></i></span><span class="ring r1"><i></i></span>
+        <img src="assets/a/asaf-hero.webp" alt="אסף כהן" width="873" height="1400" fetchpriority="high">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2 · STORY ============ -->
+<section class="sec sec--plum story bg-rings" id="s-story">
+  <div class="wrap">
+    <h2 class="reveal">לפני שלושה חודשים לקחתי שיר רנדומלי ביוטיוב…</h2>
+    <div class="story__flow" data-sfade>
+      <p>ותוך שבוע אחד הפכתי את השיר לגרסה שלי.</p>
+    </div>
+    <div class="vinyl reveal" aria-hidden="true">
+      <div class="vinyl__disc"><img src="assets/a/shine-disc.webp" alt="" width="800" height="800" loading="lazy"><span class="vinyl__sheen"></span></div>
+      <svg class="vinyl__arm" viewBox="0 0 200 260" aria-hidden="true"><circle cx="168" cy="30" r="22"/><path d="M168 30 L150 190 L112 236"/><rect x="92" y="226" width="34" height="22" rx="5" transform="rotate(-38 109 237)"/></svg>
+    </div>
+    <div class="story__flow" data-sfade>
+      <p>חודשיים אחרי, הגרסה שיצרתי, מהחדר בבית</p>
+    </div>
+    <div class="crowd reveal"><p>נוגנה מול קהל של מעל <span class="num gt-a1" data-count="10000">10,000</span> איש <span class="nw">באחד הפסטיבלים</span><br>הכי גדולים בעולם</p></div>
+  </div>
+</section>
+
+<!-- ============ 3 · VENUES ============ -->
+<section class="sec venues bg-grid" id="s-venues">
+  <div class="wrap">
+    <div class="venue reveal">
+      <div class="venue__txt">
+        <img class="venue__logo" src="assets/logos/burningman-m.webp" alt="Burning Man" width="129" height="240" loading="lazy">
+        <h3 class="lat">BURNING <span class="nw">MAN -</span> BLACKROCK CITY</h3>
+      </div>
+      <div class="venue__media" data-bleed>
+        <div class="vclip"><video muted loop playsinline preload="none" data-auto poster="assets/v/burning.webp" data-src="assets/v/burning.mp4" width="540" height="960"></video></div>
+        <div class="vclip"><video muted loop playsinline preload="none" data-auto poster="assets/v/burning2.webp" data-src="assets/v/burning2.mp4" width="540" height="960"></video></div>
+      </div>
+    </div>
+    <div class="venue venue--flip reveal">
+      <div class="venue__txt">
+        <img class="venue__logo" src="assets/logos/pacha-m.webp" alt="Pacha" width="244" height="240" loading="lazy">
+        <h3>באחת המועדונים הכי מפורסמים בעולם היום</h3>
+      </div>
+      <div class="venue__media" data-bleed>
+        <div class="vclip"><video muted loop playsinline preload="none" data-auto poster="assets/v/pacha.webp" data-src="assets/v/pacha.mp4" width="720" height="888"></video></div>
+        <div class="vclip"><video muted loop playsinline preload="none" data-auto poster="assets/v/pacha2.webp" data-src="assets/v/pacha2.mp4" width="540" height="910"></video></div>
+      </div>
+    </div>
+    <div class="venue reveal">
+      <div class="venue__txt">
+        <img class="venue__logo wide" src="assets/logos/flydance-m.webp" alt="Fly-Dance" width="638" height="240" loading="lazy">
+        <h3 class="fit">בלימסול <span class="nw">בפסטיבל Fly-Dance</span></h3>
+      </div>
+      <div class="venue__media" data-bleed>
+        <div class="vclip"><video muted loop playsinline preload="none" data-auto poster="assets/v/reel-DbV98dEMsVA.webp" data-src="assets/v/reel-DbV98dEMsVA.mp4" width="360" height="640"></video></div>
+        <div class="vclip vclip--sq"><img src="assets/a/fd-poster.webp" alt="" width="750" height="750" loading="lazy"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4 · YOU CAN TOO ============ -->
+<section class="sec sec--plum too bg-streaks" id="s-too">
+  <div class="wrap">
+    <div class="story__flow" data-sfade>
+      <p>ועד סוף הדף הקצר הזה אני הולך להראות לך איך גם אתה יכול<br>ליצור לקחת את המוזיקה שאתה אוהב ולעשות בדיוק את זה.</p>
+    </div>
+    <div class="eq reveal" aria-hidden="true"><i style="--k:0;--h0:14%;--h1:19%"></i><i style="--k:1;--h0:17%;--h1:21%"></i><i style="--k:2;--h0:11%;--h1:29%"></i><i style="--k:3;--h0:27%;--h1:43%"></i><i style="--k:4;--h0:24%;--h1:25%"></i><i style="--k:5;--h0:20%;--h1:28%"></i><i style="--k:6;--h0:13%;--h1:23%"></i><i style="--k:7;--h0:14%;--h1:54%"></i><i style="--k:8;--h0:25%;--h1:51%"></i><i style="--k:9;--h0:24%;--h1:29%"></i><i style="--k:10;--h0:16%;--h1:47%"></i><i style="--k:11;--h0:23%;--h1:59%"></i><i style="--k:12;--h0:26%;--h1:27%"></i><i style="--k:13;--h0:21%;--h1:54%"></i><i style="--k:14;--h0:19%;--h1:33%"></i><i style="--k:15;--h0:19%;--h1:30%"></i><i style="--k:16;--h0:27%;--h1:68%"></i><i style="--k:17;--h0:20%;--h1:42%"></i><i style="--k:18;--h0:26%;--h1:57%"></i><i style="--k:19;--h0:26%;--h1:73%"></i><i style="--k:20;--h0:19%;--h1:52%"></i><i style="--k:21;--h0:21%;--h1:54%"></i><i style="--k:22;--h0:13%;--h1:48%"></i><i style="--k:23;--h0:25%;--h1:34%"></i><i style="--k:24;--h0:11%;--h1:70%"></i><i style="--k:25;--h0:15%;--h1:66%"></i><i style="--k:26;--h0:18%;--h1:55%"></i><i style="--k:27;--h0:28%;--h1:47%"></i><i style="--k:28;--h0:17%;--h1:48%"></i><i style="--k:29;--h0:21%;--h1:51%"></i><i style="--k:30;--h0:16%;--h1:79%"></i><i style="--k:31;--h0:16%;--h1:66%"></i><i style="--k:32;--h0:26%;--h1:37%"></i><i style="--k:33;--h0:11%;--h1:44%"></i><i style="--k:34;--h0:24%;--h1:64%"></i><i style="--k:35;--h0:14%;--h1:47%"></i><i style="--k:36;--h0:13%;--h1:53%"></i><i style="--k:37;--h0:11%;--h1:64%"></i><i style="--k:38;--h0:26%;--h1:75%"></i><i style="--k:39;--h0:23%;--h1:73%"></i><i style="--k:40;--h0:10%;--h1:39%"></i><i style="--k:41;--h0:27%;--h1:60%"></i><i style="--k:42;--h0:17%;--h1:66%"></i><i style="--k:43;--h0:21%;--h1:59%"></i><i style="--k:44;--h0:15%;--h1:31%"></i><i style="--k:45;--h0:18%;--h1:27%"></i><i style="--k:46;--h0:17%;--h1:59%"></i><i style="--k:47;--h0:16%;--h1:21%"></i><i style="--k:48;--h0:11%;--h1:26%"></i><i style="--k:49;--h0:24%;--h1:32%"></i><i style="--k:50;--h0:15%;--h1:22%"></i><i style="--k:51;--h0:28%;--h1:32%"></i><i style="--k:52;--h0:14%;--h1:19%"></i><i style="--k:53;--h0:11%;--h1:22%"></i><i style="--k:54;--h0:22%;--h1:21%"></i><i style="--k:55;--h0:11%;--h1:30%"></i></div>
+    <div class="story__flow" data-sfade>
+      <p class="big">לאו דווקא לצאת להופיע…</p>
+      <p class="gap">פשוט את היכולת לקחת כל שיר, כל ז׳אנר, כל מוזיקה שאתה אוהב<br>ופשוט ליצור אותה מחדש ולגרום לאנשים לעוף עליה.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5 · ABOUT ============ -->
+<section class="sec about bg-dots" id="s-about">
+  <div class="wrap">
+    <div class="about__grid">
+      <figure class="about__photo reveal"><div class="frame"><img src="assets/a/asaf-black.webp" alt="אסף כהן" width="1000" height="1250" loading="lazy"></div>
+        <span class="about__badge" data-bleed aria-hidden="true"><img src="assets/a/shine-disc.webp" alt="" width="800" height="800" loading="lazy"></span></figure>
+      <div class="about__copy">
+        <h2 class="reveal">למקרה שאנחנו לא מכירים קוראים לי אסף כהן.</h2>
+        <p class="sub reveal" data-d="1">אני דיג׳י ומפיק מוזיקלי כבר מעל 11 שנים.</p>
+      </div>
+    </div>
+    <div class="reels reels--3 reveal"><div class="reels__track"><figure class="reel"><video muted playsinline preload="none" poster="assets/v/reel-DZIaltsOO_k.webp" data-src="assets/v/reel-DZIaltsOO_k.mp4" width="360" height="640" tabindex="-1"></video><span class="reel__views"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg>21.4K</span></figure><figure class="reel"><video muted playsinline preload="none" poster="assets/v/reel-DV6da8jDRF5.webp" data-src="assets/v/reel-DV6da8jDRF5.mp4" width="360" height="640" tabindex="-1"></video><span class="reel__views"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg>22.2K</span></figure><figure class="reel"><video muted playsinline preload="none" poster="assets/v/reel-DZMsnmxsXm3.webp" data-src="assets/v/reel-DZMsnmxsXm3.mp4" width="360" height="640" tabindex="-1"></video><span class="reel__views"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg>8,012</span></figure></div><div class="reels__dots" aria-hidden="true"><i></i><i></i><i></i></div></div>
+  </div>
+</section>
+
+<!-- ============ 6 · ARTISTS + FESTIVALS ============ -->
+<section class="sec sec--plum artists-sec bg-rings" id="s-artists">
+  <div class="wrap">
+    <h2 class="reveal center">בשנים האחרונות יצרתי טראקים שנוגנו על ידי אומנים מובילים בעולם</h2>
+    <div class="artists" data-bleed>
+      <figure class="artist reveal"><img src="assets/a/rafael-0.webp" alt="Rafael" width="900" height="600" loading="lazy" style="object-position:45% 30%"><figcaption>RAFAEL</figcaption></figure>
+      <figure class="artist reveal" data-d="1"><img src="assets/a/darco-4.webp" alt="Darco" width="900" height="472" loading="lazy" style="object-position:58% 30%"><figcaption>DARCO</figcaption></figure>
+      <figure class="artist reveal" data-d="2"><img src="assets/a/adamten-0.webp" alt="Adam Ten" width="900" height="600" loading="lazy" style="object-position:48% 30%"><figcaption>ADAM TEN</figcaption></figure>
+      <figure class="artist reveal" data-d="3"><img src="assets/a/solomun-07.webp" alt="Solomun" width="512" height="640" loading="lazy" style="object-position:50% 40%"><figcaption>SOLOMUN</figcaption></figure>
+    </div>
+    <div class="fest">
+      <h3 class="reveal">בפסטיבלים הכי גדולים בעולם</h3>
+      <div class="creds reveal">
+        <img src="assets/logos/ultra-w-m.webp" alt="Ultra" width="296" height="240" loading="lazy">
+        <img src="assets/logos/edc-m.webp" alt="EDC" width="413" height="240" loading="lazy">
+        <img class="tall" src="assets/logos/burningman-m.webp" alt="Burning Man" width="129" height="240" loading="lazy">
+        <img src="assets/logos/coachella-m.webp" alt="Coachella" width="503" height="240" loading="lazy">
+        <img class="tall" src="assets/logos/tomorrowland-w-m.webp" alt="Tomorrowland" width="211" height="240" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7 · STUDENTS ============ -->
+<section class="sec studs bg-grid" id="s-students">
+  <div class="wrap">
+    <h2 class="reveal">ב-5 שנים האחרונות אני לימדתי מעל <span class="num gt-a1" data-count="200">200</span> אנשים<br>הפקה ותקלוט.</h2>
+    <div class="room" data-bleed>
+      <figure class="r-vid reveal"><video muted loop playsinline preload="none" data-auto poster="assets/v/class.webp" data-src="assets/v/class.mp4" width="540" height="960"></video></figure>
+      <figure class="r-a r-sq reveal"><img src="assets/a/one-1.webp" alt="" width="900" height="879" loading="lazy"></figure>
+      <figure class="r-cert reveal"><img src="assets/a/certs.webp" alt="" width="1400" height="1050" loading="lazy"></figure>
+      <figure class="r-b r-sq reveal" data-d="1"><img src="assets/a/one-2.webp" alt="" width="900" height="1384" loading="lazy"></figure>
+      <figure class="r-c r-sq reveal" data-d="2"><img src="assets/a/one-5.webp" alt="" width="900" height="935" loading="lazy"></figure>
+      <figure class="r-d r-sq reveal" data-d="3"><img src="assets/a/one-6.webp" alt="" width="900" height="680" loading="lazy"></figure>
+    </div>
+    <div class="vtest" data-bleed>
+      <div class="vt reveal"><video playsinline preload="none" poster="assets/v/t1.webp" data-src="assets/v/t1.mp4" width="540" height="960"></video><span class="vt__play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg></span><span class="vt__snd"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 010 7"/></svg></span></div>
+      <div class="vt reveal" data-d="1"><video playsinline preload="none" poster="assets/v/t2.webp" data-src="assets/v/t2.mp4" width="540" height="960"></video><span class="vt__play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg></span><span class="vt__snd"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 010 7"/></svg></span></div>
+      <div class="vt reveal" data-d="2"><video playsinline preload="none" poster="assets/v/t4.webp" data-src="assets/v/t4.mp4" width="540" height="960"></video><span class="vt__play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg></span><span class="vt__snd"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 010 7"/></svg></span></div>
+      <div class="vt reveal" data-d="3"><video playsinline preload="none" poster="assets/v/t5.webp" data-src="assets/v/t5.mp4" width="540" height="960"></video><span class="vt__play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg></span><span class="vt__snd"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 010 7"/></svg></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 8 · VERSO ============ -->
+<section class="sec sec--plum verso bg-dots" id="s-verso">
+  <div class="wrap">
+    <h2 class="reveal">אחד התלמידים שליוויתי הוא יהלי ורסו.</h2>
+    <div class="tl">
+      <div class="tl__node reveal">
+        <span class="tl__dot"></span>
+        <div class="tl__card">
+          <figure class="tl__photo"><img src="assets/a/verso-11.webp" alt="יהלי ורסו" width="480" height="640" loading="lazy"></figure>
+          <p>שהתחיל מאפס ולמד אצלי הפקה<br><b>במשך 4 חודשים.</b></p>
+        </div>
+      </div>
+      <div class="tl__node reveal">
+        <span class="tl__dot"></span>
+        <div class="tl__card">
+          <p>שנה מהרגע שהוא סיים אצלי הוא יצא עם הטראק<br><b class="lat">I BELONG TO YOU</b> שהגיע למאות אלפי צפיות.</p>
+          <div class="tl__pair" data-bleed>
+            <figure><img src="assets/a/verso-08.webp" alt="" width="480" height="640" loading="lazy"></figure>
+            <figure><img src="assets/a/verso-13.webp" alt="" width="480" height="640" loading="lazy"></figure>
+          </div>
+        </div>
+      </div>
+      <div class="tl__node reveal">
+        <span class="tl__dot"></span>
+        <div class="tl__card">
+          <p>אחרי שזה קרה יהלי קיבל הצעה מאחת<br>חברות התקליטים הכי גדולות בעולם <b class="lat gt-a1">MACABI HOUSE</b><br>והם החתימו את הטראק שלו.</p>
+          <div class="signed">
+            <img class="signed__logo" src="assets/logos/maccabi-m.webp" alt="Maccabi House" width="190" height="240" loading="lazy">
+            <img class="signed__cover" src="assets/a/verso-06.webp" alt="" width="640" height="640" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="reels reels--4 reveal"><div class="reels__track"><figure class="reel"><video muted playsinline preload="none" poster="assets/v/reel-DVtUtawDI_o.webp" data-src="assets/v/reel-DVtUtawDI_o.mp4" width="360" height="640" tabindex="-1"></video><span class="reel__views"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg>14.4K</span></figure><figure class="reel"><video muted playsinline preload="none" poster="assets/v/reel-Dak_HTKMR1z.webp" data-src="assets/v/reel-Dak_HTKMR1z.mp4" width="360" height="640" tabindex="-1"></video><span class="reel__views"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg>53.3K</span></figure><figure class="reel"><video muted playsinline preload="none" poster="assets/v/reel-DadKfLPsY0L.webp" data-src="assets/v/reel-DadKfLPsY0L.mp4" width="360" height="640" tabindex="-1"></video><span class="reel__views"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg>64.5K</span></figure><figure class="reel"><video muted playsinline preload="none" poster="assets/v/reel-DRzV2twjARv.webp" data-src="assets/v/reel-DRzV2twjARv.mp4" width="360" height="640" tabindex="-1"></video><span class="reel__views"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg>12.3K</span></figure></div><div class="reels__dots" aria-hidden="true"><i></i><i></i><i></i><i></i></div></div>
+  </div>
+</section>
+
+<!-- ============ 9 · THE PRODUCT ============ -->
+<section class="sec product bg-streaks" id="s-product">
+  <div class="wrap">
+    <p class="product__kicker reveal">אם אתה רוצה לשמוע שיר שאתה אוהב<br>מתנגן ברמקולים, בגרסה שאתה יצרת,</p>
+    <p class="product__kicker reveal" data-d="1">אני רוצה שתכיר את</p>
+    <h2 class="product__name reveal" data-d="1">DROP 21</h2>
+    <p class="product__lead reveal" data-d="2">תכנית דיגיטלית מהבית שתראה לך איך לקחת<br>שירים שאתה אוהב ולהפוך אותם לטראקים הראשונים שלך<br>ברמה של אולפן ולעשות את זה בלי שום<br>ציוד תוך 21 יום מהמחשב שלך בבית</p>
+    <figure class="stage reveal"><img src="assets/mk/program.webp" alt="DROP 21" width="2200" height="1233" loading="lazy"></figure>
+    <div class="nums">
+      <div class="nb reveal"><span class="nb__v">12</span><span class="nb__t">שיעורים</span></div>
+      <div class="nb reveal" data-d="1"><span class="nb__v">10</span><span class="nb__t">משימות קטנות</span></div>
+      <div class="nb reveal" data-d="2"><span class="nb__i"><svg viewBox="0 0 24 24"><rect x="3.5" y="9" width="17" height="11.5" rx="1.5"/><path d="M2.5 9h19v-3.5h-19z"/><path d="M12 5.5v15"/><path d="M12 5.5c-1.5-3-5.5-3.2-5.5-.8 0 1.6 3 .8 5.5.8zM12 5.5c1.5-3 5.5-3.2 5.5-.8 0 1.6-3 .8-5.5.8z"/></svg></span><span class="nb__t">חודש אבלטון בחינם</span></div>
+      <div class="nb reveal" data-d="3"><span class="nb__i"><svg viewBox="0 0 24 24"><path d="M12 12c-2-2.6-3.6-4-5.6-4a4 4 0 000 8c2 0 3.6-1.4 5.6-4zm0 0c2 2.6 3.6 4 5.6 4a4 4 0 000-8c-2 0-3.6 1.4-5.6 4z"/></svg></span><span class="nb__t">גישה לכל החיים</span></div>
+    </div>
+    <div class="ctabox reveal"><a class="btn" href="#s-final">אני בפנים, פתח לי גישה 🎧</a></div>
+  </div>
+</section>
+
+<!-- ============ 10 · SYLLABUS ============ -->
+<section class="sec sec--plum road bg-grid" id="s-syllabus">
+  <div class="wrap">
+    <div class="road__head"><h2 class="reveal">הנה טעימה קטנה ממה שמחכה לך בפנים:</h2></div>
+    <div class="road__track">
+      <svg class="road__path" viewBox="0 0 1000 400" preserveAspectRatio="none" aria-hidden="true">
+        <defs><linearGradient id="rmGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#38d6ff"/><stop offset="1" stop-color="#ff7a1a"/></linearGradient></defs>
+        <path class="rm-line rm-base" d="M750,50 C750,100 250,100 250,150 C250,200 750,200 750,250 C750,300 250,300 250,350"/>
+        <path class="rm-line rm-flow" d="M750,50 C750,100 250,100 250,150 C250,200 750,200 750,250 C750,300 250,300 250,350"/>
+      </svg>
+      <div class="stop reveal">
+        <div class="stop__shot"><img src="assets/mk/ch1.webp" alt="" width="1500" height="756" loading="lazy"></div>
+        <div class="stop__txt"><p class="tag">חלק 1</p><h4>ההכנה. אבלטון פתוח ופרויקט שמור</h4>
+          <ul><li>התקנה עם החודש החינמי</li><li>סיור של עשר דקות, רק במה שצריך</li><li>השיר המקורי מול האדיט, כדי לשמוע לאן הולכים</li></ul></div>
+      </div>
+      <div class="stop reveal">
+        <div class="stop__shot"><img src="assets/mk/ch2.webp" alt="" width="1500" height="756" loading="lazy"></div>
+        <div class="stop__txt"><p class="tag">חלק 2</p><h4>הבסיס. הזמר על הגרוב שלך</h4>
+          <ul><li>קיק וגרוב בטמפו 125</li><li>בחירת שיר, מציאת הסקאלה, ופיצול הקול בבינה מלאכותית</li><li>הושבת הקול בדיוק על הקיק</li></ul></div>
+      </div>
+      <div class="stop reveal">
+        <div class="stop__shot"><img src="assets/mk/ch3.webp" alt="" width="1500" height="756" loading="lazy"></div>
+        <div class="stop__txt"><p class="tag">חלק 3</p><h4>הטראק. מלופ לאדיט שלם</h4>
+          <ul><li>בייסליין בסקאלה של השיר, בלי שהקיק והבס יתנגשו</li><li>צליל מוזיקלי אחד שלא מזייף</li><li>השבלון: המבנה של שיר שאתה אוהב, על האדיט שלך</li></ul></div>
+      </div>
+      <div class="stop reveal">
+        <div class="stop__shot"><img src="assets/mk/ch4.webp" alt="" width="1500" height="756" loading="lazy"></div>
+        <div class="stop__txt"><p class="tag">חלק 4</p><h4>הסאונד. מוכן לרחבה</h4>
+          <ul><li>שלושה אפקטים בסיסיים</li><li>מיקס נקי</li><li>מאסטר, ייצוא, ובדיקה על רמקול אחר</li></ul></div>
+      </div>
+    </div>
+    <div class="pf-row">
+      <figure class="pf reveal"><div class="pf__head"><span class="pf__ava"></span><span class="pf__who"><i class="pf__name" style="--w:84px"></i><span class="pf__meta"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a1 1 0 011 1v11a1 1 0 01-1 1H10l-5 4v-4H4a1 1 0 01-1-1V5a1 1 0 011-1z"/></svg>0:30</span></span></div><blockquote class="pf__txt"><span class="pf__line">איזה מלך אתה, שמע כדי להשתפר אישית הייתי צריך הכוונה נכונה וקיבלתי ממך את זה 10 מ10 עם גישה טובה נעימה ולא מתפשרת שאתה מביא שהרבה בזכות זה <span class="hl">הצלחתי לקלוט את העניינים במהירות שהפתיעה אותי אפילו</span>,</span><span class="pf__line">היה לי כיף רצח כל הזמן הזה תודה על הכל ❤️‍🔥</span></blockquote></figure>
+      <figure class="pf pf--gold reveal" data-d="1"><div class="pf__head"><span class="pf__ava"></span><span class="pf__who"><i class="pf__name" style="--w:104px"></i><span class="pf__meta"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a1 1 0 011 1v11a1 1 0 01-1 1H10l-5 4v-4H4a1 1 0 01-1-1V5a1 1 0 011-1z"/></svg>14:25</span></span></div><blockquote class="pf__txt"><span class="pf__line">אסף, תודה על השיעורים...</span><span class="pf__line">קודם כל היה כיף וזה הכי חשוב כי בשביל זה אנחנו פה...</span><span class="pf__line">מבחינה מקצועית מדהים איך אתה יודע להעביר בזמן קצר בדיוק את מה שצריך <span class="hl">ומתעסקים בתכלס במקום לבזבז שנה או יותר בקורסים</span>.</span><span class="pf__line">ומה שיפה, <span class="hl">שלא רק לומדים טכנית מה לעשות כמו רובוט</span>, אלא אתה מאוד מדגיש את הנושא האומנותי, איך לבוא, לחשוב מה אתה רוצה מהטראק ואיך אתה מוציא ממנו משהו שייתן את הייחודיות. בקיצור לא רק לדעת תיאורטית, אלא איך לחשוב כמו אומן. וואלה היה מעל הציפיות💪🙏</span><span class="pf__line">🙏</span></blockquote></figure>
+      <figure class="pf pf--chat reveal" data-d="2"><div class="pf__head"><span class="pf__ava"></span><span class="pf__who"><i class="pf__name" style="--w:92px"></i><span class="pf__meta"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a1 1 0 011 1v11a1 1 0 01-1 1H10l-5 4v-4H4a1 1 0 01-1-1V5a1 1 0 011-1z"/></svg></span></span></div><div class="pf__chat">
+          <div class="bub"><p>אח יקרר קודם כל שיפור משמעותי מאוד למדתי הרבה דברים ממך ואני אמשיך עוד ליישם ולעשות עוד ועוד כן התחלתי עוד משהו אני בע״ה ימשיך לפתח עוד ועוד פרויקטים אני בכוונה רוצה לקחת את החודש הזה של העומר לעשות כמה שיותר ררוייקטים ולראות איפה נגיע ואז נמשיך ונמשיך בשיעורים עד שהכל יתפס 100 אחוז</p><time>14:20</time></div>
+          <div class="bub"><p>אתה אלוף ואני מת עליך</p><time>14:20</time></div>
+          <div class="bub"><p>אני רוצה גם <span class="hl">לשלוח את הטראק למאסטר</span></p><time>14:22</time></div>
+        </div></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 11 · BONUSES ============ -->
+<section class="sec bonus bg-rings" id="s-bonus">
+  <div class="wrap">
+    <h2 class="reveal">אבל זה לא נגמר פה…</h2>
+    <p class="sub reveal" data-d="1">כדי שיהיה לך כל מה שצריך כדי להוציא את הטראק הראשון שלך,</p>
+    <p class="bonus__hot reveal" data-d="2">צירפתי לך חבילת בונוסים בשווי 834 ש״ח</p>
+    <p class="sub reveal" data-d="2">שאתה מקבל חינם לגמרי, כחלק מהקורס.</p>
+    <div class="bonus__grid">
+      <div class="bcard reveal">
+        <div class="bcard__shot"><img src="assets/mk/b1.webp" alt="" width="640" height="988" loading="lazy"></div>
+        <div class="bcard__txt"><p class="tag">בונוס 1</p><h4>הסמפל פק של הקורס</h4><p>אלמנטי גרוב ואפקטי מעבר מוכנים, אותם צלילים שעובדים איתם בשיעורים. גוררים לפרויקט, וזה כבר נשמע כמו רחבה.</p><span class="val">בשווי 147 ש״ח</span></div>
+      </div>
+      <div class="bcard reveal" data-d="1">
+        <div class="bcard__shot"><img src="assets/mk/b2.webp" alt="" width="640" height="988" loading="lazy"></div>
+        <div class="bcard__txt"><p class="tag">בונוס 2</p><h4>מדריך ההפצה</h4><p>צעד אחרי צעד, איפה ואיך מפרסמים את הטראק הראשון שלך, כדי שהוא לא יישאר רק אצלך במחשב.</p><span class="val">בשווי 197 ש״ח</span></div>
+      </div>
+      <div class="bcard reveal" data-d="2">
+        <div class="bcard__shot"><img src="assets/mk/b3.webp" alt="" width="640" height="988" loading="lazy"></div>
+        <div class="bcard__txt"><p class="tag">בונוס 3</p><h4>אני שומע את הטראק שלך</h4><p>שולחים לי את הקובץ הסופי, ואני מחזיר לך הודעה קולית אישית: מה עובד, ומה הייתי משנה לפני שזה יוצא לעולם.</p><p class="hot">רק לחמישים הראשונים שנכנסים.</p><span class="val">בשווי 490 ש״ח</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 12 · FOR WHO ============ -->
+<section class="sec sec--plum who bg-streaks" id="s-who">
+  <div class="wrap">
+    <h2 class="reveal">למי ״מהחדר לרחבה״ נבנה?</h2>
+    <ul class="checks">
+      <li class="check check--yes reveal"><span class="ico"><svg viewBox="0 0 24 24"><path class="draw" d="M6 12.5l4 4L18 8"/></svg></span><span class="txt">אתה דיג׳יי שמנגן טראקים של אחרים, ומת לנגן סוף סוף משהו שלך.</span></li>
+      <li class="check check--yes reveal" data-d="1"><span class="ico"><svg viewBox="0 0 24 24"><path class="draw" d="M6 12.5l4 4L18 8"/></svg></span><span class="txt">אתה שומע שיר ואומר לעצמך ״הייתי עושה לזה גרסה״, אבל אין לך מושג מאיפה מתחילים.</span></li>
+      <li class="check check--yes reveal" data-d="2"><span class="ico"><svg viewBox="0 0 24 24"><path class="draw" d="M6 12.5l4 4L18 8"/></svg></span><span class="txt">פתחת פעם אבלטון, ראית מסך מלא כפתורים, וסגרת.</span></li>
+      <li class="check check--yes reveal" data-d="3"><span class="ico"><svg viewBox="0 0 24 24"><path class="draw" d="M6 12.5l4 4L18 8"/></svg></span><span class="txt">ראית אינסוף סרטונים ביוטיוב, ועדיין אין לך טראק אחד גמור.</span></li>
+    </ul>
+    <div class="notfor reveal">
+      <h3>ולמי הוא לא מתאים</h3>
+      <p class="sub">הקורס לא מתאים למי שמחפש תואר בהפקה או תיאוריה מוזיקלית לעומק. לומדים בדיוק מה שצריך כדי להוציא טראק ראשון, ולא יותר.</p>
+      <p class="sub">הוא גם לא מתאים למי שכבר מוציא טראקים. בשבילך זה בסיסי מדי.</p>
+      <p class="sub">והוא לא מתאים למי שלא מוכן לשבת מול המחשב כמעט כל יום, במשך שלושה שבועות.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 13 · PRICE ANCHOR ============ -->
+<section class="sec anchor bg-dots" id="s-anchor">
+  <div class="wrap">
+    <h2 class="reveal">כמה זה עולה בדרך הרגילה</h2>
+    <p class="sub reveal" data-d="1">זו לא שאלה תיאורטית. אלה המספרים בישראל היום.</p>
+    <ul class="bill reveal">
+      <li><span class="m">✦</span><span class="t">שיעור פרטי בהפקה מוזיקלית:</span><span class="n">‎150 עד 270 ש״ח לשעה</span></li>
+      <li><span class="m">✦</span><span class="t">קורס אבלטון אונליין של 15 שעות:</span><span class="n">‎1,897 ש״ח</span></li>
+    </ul>
+    <p class="anchor__sum reveal">טראק ראשון זה לא שיעור אחד. סדרה של 12 שיעורים פרטיים היא <b class="hot">‎1,800 עד 3,240 ש״ח</b>.</p>
+    <p class="hair reveal">כאן לא לומדים את התוכנה. כאן מוציאים טראק.</p>
+    <p class="sub anchor__sit reveal">הסיור באבלטון לוקח עשר דקות, וכל השאר זה הטראק שלך.</p>
+    <p class="sub reveal">בקצב שלך, עם החודש החינמי של אבלטון, ובלי לקנות ציוד.</p>
+  </div>
+</section>
+
+<!-- ============ 14 · THE OFFER ============ -->
+<section class="sec offer bg-grid" id="s-offer">
+  <div class="wrap">
+    <h2 class="reveal">הקורס המלא לטראק הראשון שלך</h2>
+    <p class="sub reveal" data-d="1">זה כל מה שנכנס לחבילה:</p>
+    <div class="vstack reveal">
+      <div class="row"><span>מהחדר לרחבה, 12 שיעורים בארבעה חלקים:</span><span>1,497 ש״ח</span></div>
+      <div class="row"><span>בונוס 1, הסמפל פק של הקורס:</span><span>147 ש״ח</span></div>
+      <div class="row"><span>בונוס 2, מדריך ההפצה:</span><span>197 ש״ח</span></div>
+      <div class="row"><span>בונוס 3, אני שומע את הטראק שלך:</span><span>490 ש״ח</span></div>
+      <div class="row"><span>גישה לכל החיים:</span><span>ללא תוספת</span></div>
+      <div class="row sum"><span>מחיר כולל כל הבונוסים:</span><span>2,331 ש״ח</span></div>
+    </div>
+    <div class="pricecard reveal">
+      <figure class="mock"><img src="assets/mk/program.webp" alt="" width="2200" height="1233" loading="lazy"></figure>
+      <p class="old"><s>2,331 ש״ח</s></p>
+      <p class="only">רק</p>
+      <span class="now">297 ש״ח</span>
+      <p class="muted">והשיעורים נשארים אצלך לתמיד.</p>
+      <div class="ctabox">
+        <a class="btn btn--pulse" href="#s-final">אני בפנים, פתח לי גישה 🎧</a>
+        <img class="cards-img" src="assets/a/cards.png" alt="" width="1024" height="125" loading="lazy">
+        <p class="paynote">תשלום מאובטח. פרטי הגישה מגיעים למייל מיד אחרי התשלום. לא הגיעו? תבדוק בספאם.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 15 · GUARANTEE (30 days) ============ -->
+<section class="sec sec--plum guar bg-rings" id="s-guarantee">
+  <div class="wrap narrow">
+    <h2 class="reveal">יש לך 30 יום.</h2>
+    <div class="cal reveal" aria-hidden="true"><div class="cal__top"><i></i><i></i></div><div class="cal__grid"><i style="--k:0"></i><i style="--k:1"></i><i style="--k:2"></i><i style="--k:3"></i><i style="--k:4"></i><i style="--k:5"></i><i style="--k:6"></i><i style="--k:7"></i><i style="--k:8"></i><i style="--k:9"></i><i style="--k:10"></i><i style="--k:11"></i><i style="--k:12"></i><i style="--k:13"></i><i style="--k:14"></i><i style="--k:15"></i><i style="--k:16"></i><i style="--k:17"></i><i style="--k:18"></i><i style="--k:19"></i><i style="--k:20"></i><i style="--k:21"></i><i style="--k:22"></i><i style="--k:23"></i><i style="--k:24"></i><i style="--k:25"></i><i style="--k:26"></i><i style="--k:27"></i><i style="--k:28"></i><i style="--k:29"><svg viewBox="0 0 24 24"><path d="M6 12.5l4 4L18 8"/></svg></i></div></div>
+    <p class="lead reveal">עשית את כל השיעורים ואת כל המשימות, ואין לך טראק גמור ביד?</p>
+    <p class="big reveal">שלח לי את הפרויקט, ואני מחזיר לך את הכסף.</p>
+    <p class="sub reveal">שלושים יום זה בדיוק החודש החינמי של אבלטון.</p>
+    <p class="sub reveal">כלומר אם זה לא עבד בשבילך, יצאת בלי לשלם שקל. לא על הקורס ולא על התוכנה.</p>
+  </div>
+</section>
+
+<!-- ============ 16 · CLOSING: two futures ============ -->
+<section class="sec fork bg-streaks" id="s-close">
+  <div class="wrap">
+    <div class="fork__grid">
+      <div class="fk fk--dim reveal"><p>בעוד 21 יום אתה יכול להיות עם עוד פלייליסט של שירים של אחרים.</p><div class="plist" aria-hidden="true"><div><b></b><span><i></i><i></i></span></div><div><b></b><span><i></i><i></i></span></div><div><b></b><span><i></i><i></i></span></div><div><b></b><span><i></i><i></i></span></div><div><b></b><span><i></i><i></i></span></div></div></div>
+      <div class="fk fk--hot reveal" data-d="1"><p>או עם טראק אחד שאתה עשית.</p><div class="mytrack" aria-hidden="true"><span class="mytrack__disc"></span><span class="wv"><i style="--k:0;--h:57%"></i><i style="--k:1;--h:50%"></i><i style="--k:2;--h:31%"></i><i style="--k:3;--h:89%"></i><i style="--k:4;--h:21%"></i><i style="--k:5;--h:60%"></i><i style="--k:6;--h:92%"></i><i style="--k:7;--h:26%"></i><i style="--k:8;--h:64%"></i><i style="--k:9;--h:69%"></i><i style="--k:10;--h:23%"></i><i style="--k:11;--h:50%"></i><i style="--k:12;--h:76%"></i><i style="--k:13;--h:56%"></i><i style="--k:14;--h:78%"></i><i style="--k:15;--h:33%"></i><i style="--k:16;--h:39%"></i><i style="--k:17;--h:29%"></i><i style="--k:18;--h:61%"></i><i style="--k:19;--h:94%"></i><i style="--k:20;--h:67%"></i><i style="--k:21;--h:82%"></i><i style="--k:22;--h:51%"></i><i style="--k:23;--h:80%"></i><i style="--k:24;--h:28%"></i><i style="--k:25;--h:43%"></i><i style="--k:26;--h:74%"></i><i style="--k:27;--h:78%"></i><i style="--k:28;--h:54%"></i><i style="--k:29;--h:27%"></i><i style="--k:30;--h:41%"></i><i style="--k:31;--h:37%"></i><i style="--k:32;--h:42%"></i><i style="--k:33;--h:85%"></i></span></div></div>
+    </div>
+    <h2 class="reveal">בוא נוציא את הטראק הראשון שלך.</h2>
+    <div class="ctabox reveal"><a class="btn" href="#s-final">אני בפנים, פתח לי גישה 🎧</a></div>
+  </div>
+</section>
+
+<!-- ============ 17 · NEXT STEPS + LAUNCH PRICE + FORM ============ -->
+<section class="sec sec--plum steps bg-dots" id="s-steps">
+  <div class="wrap">
+    <h2 class="reveal">אז עכשיו ממש מלא/י את הפרטים שלך ומה שיקרה ברגעים הבאים הם :</h2>
+    <ol class="stepper">
+      <li class="st reveal"><span class="st__n">1.</span><p>אתה מכניס את המייל שלך בטופס.</p></li>
+      <li class="st reveal" data-d="1"><span class="st__n">2.</span><p>אתה עובר לדף תשלום מאובטח</p></li>
+      <li class="st reveal" data-d="2"><span class="st__n">3.</span><p>תוך 17 שניות בדיוק אתה מקבל את כל התכנים והבונסים והדרכה מסודרת ממני מה לעשות כדי להתחיל ממש ברגע זה</p></li>
+    </ol>
+    <p class="hair reveal">התוכנית נשארת אצלך לכול החיים ! ( גם אם בעתיד המחיר עולה ויהיו שיפורים ושדורגים )</p>
+    <div class="calm reveal"><p>פרטים להרגעה פלאפון ( שיש אם מי לדבר )</p><a href="tel:0503344778"><svg viewBox="0 0 24 24"><path d="M5 3.5h3.2l1.6 4.2-2.1 1.4a11 11 0 006.2 6.2l1.4-2.1 4.2 1.6V18a2.5 2.5 0 01-2.7 2.5C10 20 4 14 3.5 6.2A2.5 2.5 0 015 3.5z"/></svg>0503344778</a></div>
+    <div class="launch">
+      <h3 class="reveal">מחיר השקה</h3>
+      <p class="sub reveal">בגלל שאני אוהב אנשים זריזים שמקבלים החלטות כאן ועכשיו וכמובן בגלל ההשקה החלטתי להשיק את הקורס במחיר מוגבל במחיר השקה ל100 הראושנים במחיר של 297 ולאחר מכן המחיר עולה ל397</p>
+    </div>
+    <div class="pricecard reveal">
+      <figure class="mock"><img src="assets/mk/program.webp" alt="" width="2200" height="1233" loading="lazy"></figure>
+      <form class="buyform" novalidate>
+        <div class="row2">
+          <div><label for="nm1">שם</label><input type="text" id="nm1" name="name" required autocomplete="name"></div>
+          <div><label for="ph1">טלפון</label><input type="tel" id="ph1" name="phone" required autocomplete="tel" inputmode="tel" placeholder="050"></div>
+        </div>
+        <label for="em1">מייל</label>
+        <input type="email" id="em1" name="email" required autocomplete="email" inputmode="email" placeholder="you@email.com">
+        <button class="btn btn--pulse" type="submit">אני בפנים, פתח לי גישה 🎧</button>
+        <p class="thanks">אתה עובר לדף תשלום מאובטח</p>
+      </form>
+      <img class="cards-img" src="assets/a/cards.png" alt="" width="1024" height="125" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- ============ 18 · GUARANTEE (refund) ============ -->
+<section class="sec guar2 bg-grid" id="s-refund">
+  <div class="wrap">
+    <h2 class="reveal">אחראיות</h2>
+    <div class="seal reveal" aria-hidden="true">
+      <svg viewBox="0 0 200 200"><defs><linearGradient id="sealGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#38d6ff"/><stop offset="1" stop-color="#ff7a1a"/></linearGradient></defs>
+        <g class="ticks"><line x1="100" y1="6" x2="100" y2="22" transform="rotate(0 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(6 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(12 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(18 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(24 100 100)"/><line x1="100" y1="6" x2="100" y2="22" transform="rotate(30 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(36 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(42 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(48 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(54 100 100)"/><line x1="100" y1="6" x2="100" y2="22" transform="rotate(60 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(66 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(72 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(78 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(84 100 100)"/><line x1="100" y1="6" x2="100" y2="22" transform="rotate(90 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(96 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(102 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(108 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(114 100 100)"/><line x1="100" y1="6" x2="100" y2="22" transform="rotate(120 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(126 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(132 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(138 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(144 100 100)"/><line x1="100" y1="6" x2="100" y2="22" transform="rotate(150 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(156 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(162 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(168 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(174 100 100)"/><line x1="100" y1="6" x2="100" y2="22" transform="rotate(180 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(186 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(192 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(198 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(204 100 100)"/><line x1="100" y1="6" x2="100" y2="22" transform="rotate(210 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(216 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(222 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(228 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(234 100 100)"/><line x1="100" y1="6" x2="100" y2="22" transform="rotate(240 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(246 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(252 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(258 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(264 100 100)"/><line x1="100" y1="6" x2="100" y2="22" transform="rotate(270 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(276 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(282 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(288 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(294 100 100)"/><line x1="100" y1="6" x2="100" y2="22" transform="rotate(300 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(306 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(312 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(318 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(324 100 100)"/><line x1="100" y1="6" x2="100" y2="22" transform="rotate(330 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(336 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(342 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(348 100 100)"/><line x1="100" y1="6" x2="100" y2="16" transform="rotate(354 100 100)"/></g><circle class="rim" cx="100" cy="100" r="72"/></svg>
+      <b>30</b>
+    </div>
+    <div class="letter-lines">
+      <p class="reveal">ויותר מיזה אני כ״כ מאמין בערך ומוצר הזה</p>
+      <p class="reveal">שאני נותן 30 יום אחראיות להחזר כספי כלומר</p>
+      <p class="reveal">אם קנית את הקורס ויישמת ועדיין מסיבה כזה או אחרת אתה רוצה החזר</p>
+      <p class="reveal">אתה שולח מיייל לכתובת הזאת ומקבל החזר כספי</p>
+      <p class="fine reveal">בלי אותיות קטנות</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 19 · THE CHOICE ============ -->
+<section class="sec sec--plum choice bg-streaks" id="s-choice">
+  <div class="wrap">
+    <h2 class="reveal">הבחירה</h2>
+    <p class="sub reveal" data-d="1">ישלך 3 אופציותת ..</p>
+    <div class="roads">
+      <div class="rd rd--no reveal"><span class="rd__i"><svg viewBox="0 0 24 24"><path class="draw" d="M7 7l10 10"/><path class="draw" d="M17 7L7 17"/></svg></span><p class="h">או שתמשיך במה שאתה עושה</p><p>עוד שבוע יאללה לך עוד רעיון מטורף ותגיד לעצמך נו מה יהיה אני חייב לעשות עם עצמי כבר משהווו 🤣</p></div>
+      <div class="rd rd--no reveal" data-d="1"><span class="rd__i"><svg viewBox="0 0 24 24"><path class="draw" d="M7 7l10 10"/><path class="draw" d="M17 7L7 17"/></svg></span><p class="h">או שתחפש לבד את הפתרון אבל אני מבטיח לך שבמינימום זה ייקח לך פי 10 מהזמן</p><p>וגם לא בטוח שתצליח להגיע לתוצאה שאתה רוצה</p><p>אחרי למעלה מ200 אנשים שליוותי אני מדבר אך ורק מנסיון</p></div>
+      <div class="rd rd--yes reveal" data-d="2"><span class="rd__i"><svg viewBox="0 0 24 24"><path class="draw" d="M6 12.5l4 4L18 8"/></svg></span><p class="h">או שתרכוש את הקורסס</p><p>ותתחיל להוציא את הרעיונות שלך החוצה</p><p>תכנס לעולם מלא כיף וסיפוק</p><p>ובסופו של דבר גם להרקיד רחבות ולשמח אנשיםםם עם הרעיונות שלך !!</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 20 · FAQ ============ -->
+<section class="sec bg-rings" id="s-faq">
+  <div class="wrap">
+    <figure class="faq__figure reveal"><img src="assets/a/asaf-dj-p.webp" alt="" width="900" height="1125" loading="lazy"></figure>
+    <h2 class="faq__head reveal">שאלות תשובות</h2>
+    <div class="faq reveal">
+      <details open>
+        <summary>תוך כמה זמן אחרי שאשלם אקבל את הקורס ?</summary>
+        <p>תוך 27 שניות ישירות למייל שלך וגם אם צצה כל בעיה תוכל לשלוח לנו הודעה ישירות לפאלפון <a class="hot" href="tel:0503344778">0503344778</a></p>
+      </details>
+      <details>
+        <summary>אין לי שום ידע מקדים במוזיקה בתווים ופסנתר ומעולם לא למדתי מוזיקה</summary>
+        <p>זה בסדר גמור תופתע לדעת שאומנים גדולים מאוד גם לא יודעים חחח</p>
+        <p>בקורס אסביר לך איך בדיוק ואת הסודות הדרושים למענה עלזה 😉</p>
+      </details>
+      <details>
+        <summary>אני לא טכנלוגי האם זה בשבילי ??</summary>
+        <p>לגמרי ! התוכנית נבנתה גם לאדם הכי לא טכנולגי שיש</p>
+        <p>הכל מפורט ברמה הכי יסודית שאפשר לחשוב</p>
+        <p>וזה דומה לכמו להתקין אפלקציה בפלאפון</p>
+      </details>
+      <details>
+        <summary>אין לי אבלטון</summary>
+        <p>אתה לא צריך התוכנה נותנת חודש בחינם מתנה לכול משתמש !</p>
+      </details>
+      <details>
+        <summary>האם אצטרך לקנות עוד מלא כלים חוץ מהקורס ?</summary>
+        <p>ממש לא אני נותן תמיד אופציות להוסיף כלים אבל שום דבר הוא לא חובה בגלל זה הוספתי לך את הspacho sample pack ..</p>
+      </details>
+      <details>
+        <summary>זה נשמע טוב מידי מה ה קאץ, ?</summary>
+        <p>הקאץ הוא שצריך לעשות את העבודה עוברים על התכנים וצריך ליישם !</p>
+        <p>אם אתה מוכן לזה אתה לגמרי תשיג את התוצאה</p>
+      </details>
+      <details>
+        <summary>למה המחיר זול ??</summary>
+        <p>בתור בן אדם שמלווה אנשים כול היום לתוצאות בדיוק כאלה תמיד חלמתי להנגיש את המידע הזה לעוד רבים</p>
+        <p>וכמובן בגלל שאתם לא יושבים פיזית איתי אני יכול להרשות לעצמי להנגיש אתזה לקהל הרחב במחיר כזה</p>
+        <p>ואני לא רוצה שמחיר יהיה המחסום :)</p>
+      </details>
+      <details>
+        <summary>צריך לדעת אנגלית ?</summary>
+        <p>לא אני מסביר ממש כול מילה ואת ההקשר שלה בקורס כך שלא צריך לדעת אנגלית</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 21 · PERSONAL NOTE + FINAL FORM ============ -->
+<section class="sec final personal bg-dots" id="s-final">
+  <div class="wrap">
+    <h2 class="reveal">מסר אישי</h2>
+    <div class="note reveal">
+      <img class="note__ava" src="assets/a/asaf-face.webp" alt="אסף כהן" width="360" height="360" loading="lazy">
+      <p>אזז בקיצוררר אם הגעת עד לכאן</p>
+      <p>חשוב לי להגיד כמה מילים מהלב</p>
+      <p>אני יודע מהזה להיות שם במסיבות להרגיש את אנרגיה ולחושב על מוזיקה זמן לא קצר בכלל במהלך היוםםם</p>
+      <p>ואני יודע מה זה להרגיש לפעמים שכאילו אתה יודע מה הקהל צריך ולא תמיד הדיגי שמנגן מרגיש לך שהוא פוגע</p>
+      <p>הקורס הזה הוא נועד להיות קורס מבוא לכול אותם האנשים שפשוט יש להם את זה ושפשוט צריכים את הכלים הנכונים להתחיל</p>
+      <p>אני לא אומר שזה הולך להיות קל אבל אני כן מבטיח שעולם ההפקה המוזיקלית הוא ללא ספק משהו שיכול להוסיף מלאאאא צבע לחיים ובתור אחד שחי את זה</p>
+      <p>אני ממש ישמח ללוות אותכם בהתחלה שלכם</p>
+      <p>כי גם אני הייתי שם ואין שום דבר שמבדיל ביני ובינכם מלבד עשייה והשקעה עם הכלים הנכונים שהיום אני מנגיש את מה שלא היה לי אז לדור החדש</p>
+    </div>
+    <div class="pricecard reveal">
+      <figure class="mock"><img src="assets/mk/program.webp" alt="" width="2200" height="1233" loading="lazy"></figure>
+      <form class="buyform" novalidate>
+        <div class="row2">
+          <div><label for="nm2">שם</label><input type="text" id="nm2" name="name" required autocomplete="name"></div>
+          <div><label for="ph2">טלפון</label><input type="tel" id="ph2" name="phone" required autocomplete="tel" inputmode="tel" placeholder="050"></div>
+        </div>
+        <label for="em2">מייל</label>
+        <input type="email" id="em2" name="email" required autocomplete="email" inputmode="email" placeholder="you@email.com">
+        <button class="btn btn--pulse" type="submit">אני בפנים, פתח לי גישה 🎧</button>
+        <p class="thanks">אתה עובר לדף תשלום מאובטח</p>
+      </form>
+      <img class="cards-img" src="assets/a/cards.png" alt="" width="1024" height="125" loading="lazy">
+    </div>
+  </div>
+</section>
+</main>
+
+<script src="lp.js"></script>
+<script src="asaf.js"></script>
 </body>
 </html>
