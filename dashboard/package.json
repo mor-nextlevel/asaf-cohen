@@ -1,0 +1,7 @@
+{
+  "name": "sales-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sales tracking dashboard: Cardcom sales, Rav Messer lists, Meta ad spend",
+  "type": "module"
+}
