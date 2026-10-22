@@ -1,0 +1,118 @@
+/* לוח המעקב של אסף. הבסיס הוא ui/lab.css משפת העיצוב של מור (ורוד, נקודה אחת).
+   כאן רק מה שהלוח צריך מעבר לרכיבים: עמוד, כניסה, בורר תאריכים ותוספות קטנות.
+   כל צבע דרך טוקן, אף פעם לא צבע קשיח. */
+
+body { background: var(--bg); }
+.as-wrap { max-width: 1360px; margin: 0 auto; padding: 24px 20px 48px; display: flex; flex-direction: column; gap: 18px; }
+.as-wrap > section { scroll-margin-top: 14px; }
+.as-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.as-two > div, .as-two > div > .cd { min-width: 0; height: 100%; }
+@media (max-width: 1100px) { .as-two { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 760px) { .as-wrap { padding: 14px 12px 36px; gap: 14px; } }
+
+/* ---------- כותרת ---------- */
+.as-av { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; flex: none; box-shadow: 0 0 0 3px var(--a1s); }
+.as-av.lg { width: 72px; height: 72px; }
+.as-btns { flex-wrap: wrap; }
+.h6 .utabs button { cursor: pointer; }
+
+/* ---------- פס ההדגמה ---------- */
+.as-demo { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; font-size: 13.5px; color: var(--ink2); padding: 12px 16px; background: var(--warnbg); border-color: transparent; }
+.as-demo b { color: var(--ink); }
+
+/* ---------- מספרים ---------- */
+.as-neu { color: var(--ink2) !important; background: var(--track) !important; }
+.a6 .row { flex-wrap: wrap; row-gap: 4px; }
+@media (max-width: 760px) { .a6 .big2 { font-size: clamp(24px, 7.4vw, 34px); } .as-long { display: none; } }
+
+/* ---------- בדיקות ---------- */
+.as-chk { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.as-chk .lab { margin-left: 6px; display: inline-flex; gap: 6px; align-items: center; }
+/* בטלפון בדיקה ארוכה נשברת לשתי שורות במקום לצאת מהמסך */
+.as-chk .tag { white-space: normal; max-width: 100%; }
+.as-chk .tag::before { flex: none; }
+
+/* ---------- משפך וגרף ---------- */
+.as-note { font-size: 12px; color: var(--mute); margin-top: 12px; display: flex; gap: 6px; align-items: flex-start; line-height: 1.5; }
+.as-note .ic { flex: none; margin-top: 2px; }
+.as-empty { color: var(--mute); text-align: center; padding: 28px 10px; font-size: 13.5px; }
+
+/* ---------- טבלאות ---------- */
+.as-th { width: 32px; height: 32px; border-radius: 8px; object-fit: cover; flex: none; display: block; background: var(--track); }
+.as-ad { display: flex; gap: 10px; align-items: center; min-width: 0; }
+.as-ad b { font-weight: 600; display: block; max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.as-tot td { font-weight: 700; background: var(--bg); }
+.as-tabs { margin: 4px 0; overflow-x: auto; scrollbar-width: none; }
+.as-tabs::-webkit-scrollbar { display: none; }
+.as-tabs button { white-space: nowrap; cursor: pointer; }
+.as-tabs button .n { color: var(--mute); font-weight: 600; margin-right: 4px; }
+.as-ph { white-space: nowrap; }
+.as-mail { display: block; font-size: 12px; color: var(--mute); font-weight: 400; max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.as-wa { display: inline-flex; gap: 5px; align-items: center; border: 1px solid var(--line2); background: var(--card); color: var(--ok); border-radius: 999px; padding: 4px 10px; font-size: 12px; font-weight: 600; text-decoration: none; white-space: nowrap; }
+.as-wa:hover { background: var(--okbg); }
+.as-in { border: 1px solid var(--line2); background: var(--card); border-radius: 9px; padding: 7px 12px; font: inherit; font-size: 13px; color: var(--ink); min-width: 0; }
+.as-in:focus { outline: none; border-color: var(--a1); box-shadow: 0 0 0 3px var(--a1s); }
+.as-search { position: relative; display: inline-flex; align-items: center; }
+.as-search .ic { position: absolute; right: 10px; color: var(--mute); pointer-events: none; }
+.as-search .as-in { padding-right: 32px; width: 210px; }
+@media (max-width: 760px) { .as-search .as-in { width: 100%; } .as-search { flex: 1; } .as-ad b { max-width: 150px; } }
+
+/* ---------- הסבר בתחתית ---------- */
+.as-foot { font-size: 12px; color: var(--mute); line-height: 1.7; padding: 4px 6px; }
+
+/* ---------- טעינה ---------- */
+#app.busy #k1, #app.busy #k2, #app.busy #chk, #app.busy section:not(#s-top) { opacity: .45; transition: opacity .12s ease; pointer-events: none; }
+
+/* ---------- כניסה ---------- */
+#gate { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.as-gate { width: 100%; max-width: 360px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; padding: 32px 26px; }
+.as-gate h1 { margin: 6px 0 0; font-size: 22px; font-weight: 800; }
+.as-gate p { margin: 0 0 6px; color: var(--mute); font-size: 13.5px; }
+.as-gate .as-in, .as-gate .btn { width: 100%; justify-content: center; padding: 10px 12px; font-size: 14px; }
+.as-err { min-height: 18px; font-size: 13px; color: var(--bad); }
+
+/* ---------- בורר התאריכים, אותו בורר של הלוח של לנה בטוקנים של שפת העיצוב ---------- */
+.cdp-wrap { position: relative; display: inline-block; }
+.cdp-trigger { display: inline-flex; align-items: center; gap: 7px; background: var(--card); border: 1px solid var(--line2); border-radius: 9px; padding: 7px 12px; font: inherit; font-size: 13px; font-weight: 500; color: var(--ink2); cursor: pointer; white-space: nowrap; }
+.cdp-trigger:hover { border-color: var(--a1); }
+.cdp-trigger svg { opacity: .6; }
+.cdp-popup { display: none; position: absolute; top: calc(100% + 8px); inset-inline-end: 0; background: var(--card); border: 1px solid var(--line2); border-radius: 13px; box-shadow: 0 18px 50px rgba(20, 21, 26, .18); z-index: 60; }
+.cdp-popup.open { display: block; }
+.cdp-body { display: flex; }
+.cdp-cal { padding: 16px; border-inline-end: 1px solid var(--line); }
+.cdp-presets { padding: 12px; min-width: 168px; display: flex; flex-direction: column; gap: 2px; }
+.cdp-preset { padding: 8px 12px; border-radius: 8px; font-size: 13px; cursor: pointer; color: var(--ink2); }
+.cdp-preset:hover { background: var(--a1p); }
+.cdp-preset.active { background: var(--a1s); color: var(--a1d); font-weight: 700; }
+.cdp-months { display: flex; gap: 20px; }
+.cdp-month { min-width: 232px; }
+.cdp-month-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.cdp-month-title { font-size: 14px; font-weight: 700; }
+.cdp-nav { width: 28px; height: 28px; border: 1px solid var(--line2); background: var(--card); border-radius: 8px; cursor: pointer; color: var(--mute); font-size: 13px; }
+.cdp-nav:hover { border-color: var(--a1); color: var(--a1); }
+.cdp-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-bottom: 4px; }
+.cdp-wd { text-align: center; font-size: 11px; color: var(--mute); font-weight: 600; padding: 4px 0; }
+.cdp-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+.cdp-day { height: 32px; display: grid; place-items: center; font-size: 13px; border-radius: 8px; cursor: pointer; color: var(--ink); }
+.cdp-day:hover:not(.cdp-other) { background: var(--a1s); color: var(--a1d); }
+.cdp-day.cdp-other { color: var(--faint); cursor: default; }
+.cdp-day.cdp-today span { text-decoration: underline; text-underline-offset: 3px; }
+.cdp-day.cdp-in-range { background: var(--a1s); color: var(--a1d); border-radius: 0; }
+.cdp-day.cdp-start, .cdp-day.cdp-end { background: var(--a1); color: var(--on-a1); }
+.cdp-day.cdp-start { border-radius: 8px 0 0 8px; }
+.cdp-day.cdp-end { border-radius: 0 8px 8px 0; }
+.cdp-day.cdp-same-day { border-radius: 8px !important; }
+.cdp-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+.cdp-range { font-size: 12px; color: var(--mute); font-variant-numeric: tabular-nums; }
+.cdp-foot-btns { display: flex; gap: 8px; }
+.cdp-btn-cancel { border: none; background: transparent; color: var(--mute); font: inherit; font-size: 13px; cursor: pointer; padding: 8px 12px; border-radius: 8px; }
+.cdp-btn-cancel:hover { color: var(--ink); }
+.cdp-btn-apply { border: none; background: var(--a1); color: var(--on-a1); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; padding: 8px 16px; border-radius: 8px; }
+.cdp-btn-apply:hover { background: var(--a1d); }
+@media (max-width: 760px) {
+  .cdp-popup { position: fixed; left: 12px !important; right: 12px !important; top: 12vh; max-height: 76vh; overflow-y: auto; }
+  .cdp-body { flex-direction: column; }
+  .cdp-months { flex-direction: column; gap: 14px; }
+  .cdp-month { min-width: 0; }
+  .cdp-presets { min-width: 0; flex-direction: row; flex-wrap: wrap; }
+}
