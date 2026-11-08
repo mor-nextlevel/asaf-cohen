@@ -129,10 +129,12 @@
     });
   });
 
-  /* DEMO ONLY: the form shows its thank-you line and goes nowhere. On a real page replace this
-     block with the real checkout or lead submit. */
+  /* The form shows its "moving to payment" line and sends the buyer to Asaf's Grow payment page. */
+  var PAY="https://pay.grow.link/Nzk1MTM~d197f274ef1748f00e284f5f3ff3ac1e-NDI0OTQ1Ng";
   d.querySelectorAll(".buyform").forEach(function(f){
-    f.addEventListener("submit",function(e){ e.preventDefault(); if(f.checkValidity()) f.classList.add("sent"); else f.reportValidity(); });
+    f.addEventListener("submit",function(e){ e.preventDefault(); if(!f.checkValidity()){ f.reportValidity(); return; }
+      f.classList.add("sent"); if(window.fbq) fbq("track","InitiateCheckout",{value:297,currency:"ILS"});
+      setTimeout(function(){ location.href=PAY; },400); });
   });
 
   var tick=false;
