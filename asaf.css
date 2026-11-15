@@ -363,3 +363,14 @@
 .snd:focus-visible{outline:2px solid var(--a1);outline-offset:3px}
 .vinyl .snd{right:auto;left:0;bottom:2%;width:52px;height:52px}
 .vinyl .snd svg{width:23px;height:23px}
+
+/* ---------- DROP 21 student messages spread through the page (15.11) ---------- */
+.pf-drop{text-align:right}
+.pf-row--2{max-width:940px;margin-inline:auto}
+@media (min-width:860px){.pf-row.pf-row--2{grid-template-columns:repeat(2,1fr)}}
+.pf-drop.pf-solo{max-width:520px}
+.fork .pf-drop{margin-top:clamp(40px,6vw,64px)}
+.pf .bub p+p{margin-top:10px}
+.pf .ring{position:relative;display:inline-block;white-space:nowrap;font-weight:700;color:var(--ivory);margin-inline:.38em}
+.pf .ring svg{position:absolute;top:-.26em;left:-.42em;width:calc(100% + .84em);height:calc(100% + .52em);overflow:visible;pointer-events:none}
+.pf .ring path{fill:none;stroke:var(--a1);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
