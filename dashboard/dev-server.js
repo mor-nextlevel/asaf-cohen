@@ -37,11 +37,7 @@ if (fs.existsSync(envFile)) {
   }
 }
 const { default: handler } = await import('./api/data.js');
-<<<<<<< Updated upstream
 const { default: abandonHandler } = await import('./api/abandon.js');
-=======
-const { default: premium } = await import('./api/premium.js');
->>>>>>> Stashed changes
 
 const TYPES = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
@@ -51,22 +47,14 @@ const TYPES = {
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
 
-<<<<<<< Updated upstream
   if (url.pathname === '/api/data' || url.pathname === '/api/abandon') {
-=======
-  if (url.pathname === '/api/data' || url.pathname === '/api/premium') {
->>>>>>> Stashed changes
     // the two helpers Vercel adds to the response
     res.status = (code) => { res.statusCode = code; return res; };
     res.json = (body) => {
       res.setHeader('Content-Type', 'application/json; charset=utf-8');
       res.end(JSON.stringify(body));
     };
-<<<<<<< Updated upstream
     try { await (url.pathname === '/api/data' ? handler : abandonHandler)(req, res); } catch (e) { res.status(500).json({ ok: false, error: e.message }); }
-=======
-    try { await (url.pathname === '/api/premium' ? premium : handler)(req, res); } catch (e) { res.status(500).json({ ok: false, error: e.message }); }
->>>>>>> Stashed changes
     return;
   }
 

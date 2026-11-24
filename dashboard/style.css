@@ -149,32 +149,3 @@ body { background: var(--bg); }
   .cdp-month { min-width: 0; }
   .cdp-presets { min-width: 0; flex-direction: row; flex-wrap: wrap; }
 }
-
-/* ---------------- תוכנית הפרימיום: מתג ומסך השאלונים ---------------- */
-.as-prog button { font-weight: 600; white-space: nowrap; }
-body.prem #k1, body.prem #k2, body.prem #chk, body.prem #s-sales, body.prem #s-ads, body.prem #s-people,
-body.prem #demo, body.prem #picker, body.prem #hdrSub, body.prem .h6 .utabs, body.prem #foot { display: none; }
-body:not(.prem) #s-prem { display: none; }
-#s-prem { display: grid; gap: 16px; }
-.pr-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 14px; }
-.pr-grid > .as-empty { grid-column: 1 / -1; }
-.pr-card { padding: 16px; display: flex; flex-direction: column; gap: 12px; box-shadow: none; border: 1px solid var(--line); }
-.pr-h { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-.pr-h .g-who { display: flex; align-items: center; gap: 10px; min-width: 0; }
-.pr-h .g-who b { display: block; font-size: 15px; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.as-wa.pr-wa { padding: 8px 14px; font-size: 13.5px; flex-shrink: 0; }
-.pr-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; font-size: 12.5px; color: var(--ink2); }
-.pr-meta .muted { display: inline-flex; align-items: center; gap: 4px; }
-.pr-qa { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 7px 14px; margin: 0; padding-top: 12px; border-top: 1px solid var(--line); font-size: 13.5px; }
-.pr-qa dt { color: var(--mute); white-space: nowrap; }
-.pr-qa dd { margin: 0; color: var(--ink); overflow-wrap: anywhere; }
-.pr-link { display: inline-flex; align-items: center; gap: 4px; color: var(--a1); text-decoration: none; max-width: 100%; }
-.pr-link span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; direction: ltr; }
-@media (max-width: 900px) { .pr-grid { grid-template-columns: minmax(0, 1fr); } }
-@media (max-width: 760px) {
-  .as-prog { width: 100%; }
-  .as-prog button { flex: 1; justify-content: center; }
-  .pr-qa { grid-template-columns: minmax(0, 1fr); gap: 2px; }
-  .pr-qa dd { margin-bottom: 8px; }
-}
-.pr-h .as-mail { direction: ltr; text-align: right; }
