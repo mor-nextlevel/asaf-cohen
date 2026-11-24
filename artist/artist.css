@@ -68,14 +68,17 @@
 .toy__btn--off circle{stroke:rgba(var(--a2-rgb),.4);fill:none}.toy__btn--off path{fill:rgba(var(--a2-rgb),.5)}
 @media (min-width:900px){.kid__top{grid-template-columns:1.1fr .9fr}}
 
-.asks{display:grid;grid-template-columns:1fr 1fr;gap:clamp(10px,1.4vw,16px);margin-top:clamp(40px,6vw,72px)}
+/* "אבל": the turn of the section, a big word between two hairlines */
+.but{display:flex;align-items:center;gap:clamp(16px,3vw,36px);margin-top:clamp(48px,7vw,90px);font-size:clamp(68px,15vw,150px);line-height:1;letter-spacing:-.03em;text-align:center}
+.but::before,.but::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(var(--a2-rgb),.55))}
+.but::after{background:linear-gradient(270deg,transparent,rgba(var(--a2-rgb),.55))}
+.asks{display:grid;grid-template-columns:1fr 1fr;gap:clamp(10px,1.4vw,16px);margin-top:clamp(28px,4vw,48px)}
 .ask{position:relative;aspect-ratio:3/4;border-radius:20px;overflow:hidden;background:var(--sf-4);border:1px solid rgba(var(--ivory-rgb),.1);
   box-shadow:0 34px 80px -44px rgba(0,0,0,.95)}
 .ask img,.ask video{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.06);transition:transform 1.6s var(--ease-out)}
 .ask.in img,.ask.in video{transform:scale(1)}
 .ask::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,9,12,0) 38%,rgba(8,9,12,.92) 100%)}
 .ask figcaption{position:absolute;z-index:1;inset-inline:14px;bottom:14px;font-weight:700;font-size:clamp(19px,5.4vw,26px);line-height:1.1;color:var(--t-hi);white-space:nowrap}
-.ask figcaption small{display:block;font-size:max(14px,.55em);font-weight:500;color:var(--a2-soft);margin-bottom:2px}
 @media (min-width:860px){.asks{grid-template-columns:repeat(4,1fr)}.ask{aspect-ratio:3/4.3}.ask figcaption{font-size:clamp(22px,2.4vw,34px)}}
 /* the sound buttons of the reels, big enough for a thumb even when the side reel is scaled down */
 .snd{width:50px;height:50px}
