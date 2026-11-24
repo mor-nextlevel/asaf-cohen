@@ -129,10 +129,22 @@
     });
   });
 
-  /* The form shows its "moving to payment" line and sends the buyer to Asaf's Grow payment page. */
+  /* The form shows its "moving to payment" line and sends the buyer to Asaf's Grow payment page.
+     On the way it saves who filled it (api/lead.js), so whoever never pays shows up in Asaf's
+     dashboard with a WhatsApp button. keepalive lets the save finish after the page has moved on. */
   var PAY="https://pay.grow.link/Nzk1MTM~d197f274ef1748f00e284f5f3ff3ac1e-NDI0OTQ1Ng";
-  d.querySelectorAll(".buyform").forEach(function(f){
+  var SRC={}, qs=new URLSearchParams(location.search);
+  ["utm_source","utm_medium","utm_campaign","utm_content","utm_term"].forEach(function(k){ var v=qs.get(k); if(v) SRC[k]=v; });
+  function saveLead(f,i){
+    var val=function(n){ var el=f.querySelector("[name="+n+"]"); return el?el.value:""; };
+    try{
+      fetch("/api/lead",{method:"POST",keepalive:true,headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({name:val("name"),phone:val("phone"),email:val("email"),form:String(i+1),src:SRC})}).catch(function(){});
+    }catch(err){}
+  }
+  d.querySelectorAll(".buyform").forEach(function(f,i){
     f.addEventListener("submit",function(e){ e.preventDefault(); if(!f.checkValidity()){ f.reportValidity(); return; }
+      saveLead(f,i);
       f.classList.add("sent"); if(window.fbq) fbq("track","InitiateCheckout",{value:297,currency:"ILS"});
       setTimeout(function(){ location.href=PAY; },400); });
   });

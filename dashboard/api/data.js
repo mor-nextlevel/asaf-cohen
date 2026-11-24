@@ -18,6 +18,7 @@
 // environment variable. With no source connected at all, the page runs on demo data.
 // ---------------------------------------------------------------------------
 
+import { list as blobList, get as blobGet } from '@vercel/blob';
 import S from './_settings.js';
 import { demoPayload } from './_demo.js';
 
@@ -73,6 +74,13 @@ const HAS_CC = !!(process.env.CARDCOM_API_NAME && process.env.CARDCOM_API_PASSWO
 const HAS_RM = !!(process.env.RESPONDER_CLIENT_ID && process.env.RESPONDER_CLIENT_SECRET && process.env.RESPONDER_USER_TOKEN);
 const HAS_META = !!(process.env.META_ACCESS_TOKEN && AD_ACCOUNT);
 const DEMO = !HAS_CC && !HAS_RM && !HAS_META;
+// Rav Messer can be connected only for the abandoned carts, with no list feeding
+// the numbers. The page then stays in its Meta mode, so it is told RM is "on"
+// only when a list actually feeds the sales.
+const RM_NUMBERS = HAS_RM && !!(LIST_LEADS || LIST_BUYERS);
+// The landing page's form writes every fill to the private Blob store that both
+// projects share (api/lead.js on the landing page).
+const HAS_BLOB = !!process.env.BLOB_READ_WRITE_TOKEN;
 
 // Serverless instances stay warm; a short cache keeps a page refresh from
 // re-walking all three APIs. 90s is well under how fast any number moves.
@@ -411,6 +419,121 @@ async function metaCreatives() {
   return map;
 }
 
+/* ---------------------------- abandoned carts ---------------------------- */
+
+// Whoever filled the form on the landing page, or was dropped by the payment page
+// into the abandoners list, and is not in the buyers list. One row per person,
+// newest first, with the moment Asaf last opened WhatsApp to them.
+const AB_BUYERS = n(S.abandonBuyersList);
+const AB_CART = n(S.abandonCartList);
+const AB_DAYS = n(S.abandonDays) || 14;
+const AB_WAIT_MS = (S.abandonWaitMinutes === undefined ? 20 : n(S.abandonWaitMinutes)) * 60 * 1000;
+
+// The same key on both sides: the last nine digits of the phone, or the email.
+// It is also the name of the person's "contacted" mark in the store, see ./abandon.js.
+export const personKey = (p) => phoneKey(p.phone) || (p.email ? 'm-' + String(p.email).toLowerCase().replace(/[^a-z0-9._@+-]/g, '') : '');
+
+async function blobJson(pathname) {
+  const r = await blobGet(pathname, { access: 'private', useCache: false });
+  return r ? JSON.parse(await new Response(r.stream).text()) : null;
+}
+
+async function blobPaths(prefix, sinceMs) {
+  const out = [];
+  let cursor;
+  do {
+    const page = await blobList({ prefix, cursor, limit: 1000 });
+    for (const b of page.blobs) {
+      const at = new Date(b.uploadedAt).getTime();
+      if (!sinceMs || at >= sinceMs) out.push({ path: b.pathname, at });
+    }
+    cursor = page.hasMore ? page.cursor : undefined;
+  } while (cursor);
+  return out;
+}
+
+// Each fill is its own small file; read them 25 at a time.
+async function formFills(sinceMs) {
+  if (!HAS_BLOB) return [];
+  const paths = await blobPaths('leads/', sinceMs);
+  const out = [];
+  for (let i = 0; i < paths.length; i += 25) {
+    const part = await Promise.all(paths.slice(i, i + 25).map((p) => blobJson(p.path).catch(() => null)));
+    out.push(...part.filter(Boolean));
+  }
+  return out;
+}
+
+// A mark is an empty file named after the person; its upload time is when Asaf
+// opened WhatsApp, so one listing call reads them all. Never cached: a mark made
+// a second ago has to show on the next refresh.
+async function contactMarks() {
+  if (!HAS_BLOB) return new Map();
+  const paths = await blobPaths('contacted/', 0);
+  return new Map(paths.map((p) => [p.path.slice(10, -5), p.at]));
+}
+
+const ilStamp = (ms) => IL_FMT.format(new Date(ms));
+
+export function abandoners({ forms, cart, buyers, contacted, now }) {
+  const sinceIL = ilStamp(now - AB_DAYS * 86400000);
+  const bought = new Set();
+  for (const b of buyers) {
+    if (b.email) bought.add(String(b.email).toLowerCase());
+    if (phoneKey(b.phone)) bought.add(phoneKey(b.phone));
+  }
+  const didBuy = (p) => bought.has(phoneKey(p.phone)) || (!!p.email && bought.has(String(p.email).toLowerCase()));
+
+  const byKey = new Map();
+  const byMail = new Map();
+  let waiting = 0;
+  const add = (p, from) => {
+    if (didBuy(p)) return;
+    const key = personKey(p);
+    if (!key) return;
+    const mail = String(p.email || '').toLowerCase();
+    const hit = byKey.get(key) || (mail && byMail.get(mail));
+    if (hit) {
+      hit.times++;
+      if (!hit.from.includes(from)) hit.from.push(from);
+      if (p.at > hit.at) Object.assign(hit, { at: p.at, name: p.name || hit.name, email: p.email || hit.email });
+      if (!hit.phone && p.phone) { hit.phone = p.phone; hit.key = key; byKey.set(key, hit); }
+      return;
+    }
+    const row = { key, name: p.name || '', email: mail, phone: p.phone || '', at: p.at, times: 1, from: [from], src: p.src || null };
+    byKey.set(key, row);
+    if (mail) byMail.set(mail, row);
+  };
+
+  for (const f of forms) {
+    // a fill from the last few minutes may still be on the payment page
+    if (now - n(f.at) < AB_WAIT_MS) { if (!didBuy(f)) waiting++; continue; }
+    add({ ...f, at: ilStamp(n(f.at)) }, 'form');
+  }
+  for (const c of cart) if (c.at >= sinceIL && !c.unsubscribed) add(c, 'cart');
+
+  const people = [...new Set(byKey.values())].filter((p) => p.at >= sinceIL);
+  for (const p of people) {
+    const t = contacted.get(p.key) || (p.email && contacted.get(personKey({ email: p.email })));
+    p.contactedAt = t ? ilStamp(t) : '';
+  }
+  people.sort((a, b) => (a.at < b.at ? 1 : -1));
+  return { people, waiting };
+}
+
+async function abandonData(now) {
+  const sinceMs = now - AB_DAYS * 86400000;
+  const [forms, cart, buyers, contacted] = await Promise.all([
+    labelled('הטופס בדף', cached('ab-forms', () => formFills(sinceMs))),
+    labelled('רב מסר', cached('rm-ab-cart', () => rmList(AB_CART))),
+    labelled('רב מסר', cached('rm-ab-buyers', () => rmList(AB_BUYERS))),
+    labelled('הטופס בדף', contactMarks()),
+  ]);
+  // example.com is reserved for tests (a test checkout on 24.11.2026 left one in the cart list)
+  const real = (p) => !/@example\.(com|org|net)$/i.test(String(p.email || ''));
+  return abandoners({ forms: forms.filter(real), cart: cart.filter(real), buyers, contacted, now });
+}
+
 /* -------------------------------- handler -------------------------------- */
 
 function isoDay(d) {
@@ -471,7 +594,7 @@ export default async function handler(req, res) {
       product: String(S.productName || '').trim(),
     },
     demo: DEMO,
-    sources: { cardcom: HAS_CC, ravmesser: HAS_RM, meta: HAS_META },
+    sources: { cardcom: HAS_CC, ravmesser: RM_NUMBERS, meta: HAS_META },
     prices: { main: PRICE_MAIN, bump: PRICE_BUMP },
     hasBump: PRICE_BUMP > 0,
     vat: VAT_RATE,
@@ -482,15 +605,30 @@ export default async function handler(req, res) {
     courseAmounts: PRODUCT_AMOUNTS,
     onlyThisProduct: ONLY_THIS_PRODUCT,
     leadsDropBuyers: LEADS_DROP_BUYERS,
+    abandon: {
+      // the people only show when the form store and the buyers list are both
+      // connected; without the buyers list every buyer would show as an abandoner
+      ready: DEMO || (HAS_BLOB && HAS_RM && AB_BUYERS > 0),
+      days: AB_DAYS,
+      waitMinutes: Math.round(AB_WAIT_MS / 60000),
+      message: String(S.abandonMessage || ''),
+    },
   };
 
   if (DEMO) {
-    return res.status(200).json({ ...base, ...demoPayload({
+    const demo = demoPayload({
       since, until, vsince, vuntil, today, classify, prices: { main: PRICE_MAIN, bump: PRICE_BUMP },
-    }) });
+    });
+    // the demo's checkout list plays the abandoners list, so every demo lead who did not buy shows
+    const ab = abandoners({ forms: [], cart: demo.ravmesser.leads, buyers: demo.ravmesser.buyers, contacted: new Map(), now: Date.now() });
+    return res.status(200).json({ ...base, ...demo, abandon: { ...base.abandon, ...ab } });
   }
 
   try {
+    // A broken abandoners source shows on its own card and leaves the rest of the page up.
+    const abandonP = base.abandon.ready
+      ? abandonData(Date.now()).catch((e) => { console.error(e.message); return { error: e.message }; })
+      : Promise.resolve({});
     const [leads, buyers, bump, daily, ads, campaigns, creatives, account, cardcom] = await Promise.all([
       labelled('רב מסר', cached('rm-leads', () => rmList(LIST_LEADS))),
       labelled('רב מסר', cached('rm-buyers', () => rmList(LIST_BUYERS))),
@@ -509,9 +647,11 @@ export default async function handler(req, res) {
         return { error: e.message };
       }),
     ]);
+    const ab = await abandonP;
 
     return res.status(200).json({
       ...base,
+      abandon: { ...base.abandon, ...ab },
       ravmesser: { leads, buyers, bump },
       cardcom: Array.isArray(cardcom)
         ? { ok: true, transactions: classify(cardcom, buyers) }
