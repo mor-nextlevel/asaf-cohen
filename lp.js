@@ -129,11 +129,23 @@
     });
   });
 
-  /* The form shows its "moving to payment" line and sends the buyer to Asaf's Cardcom payment page (page 2),
-     with name, email and phone already filled in there. Cardcom sends paid buyers on to /thanks. */
+  /* The form shows its "moving to payment" line and sends the buyer to Asaf's Cardcom payment page (page 3),
+     with name, email and phone already filled in there. Cardcom sends paid buyers on to /thanks.
+     On the way it saves who filled it (api/lead.js), so whoever never pays shows up in Asaf's
+     dashboard with a WhatsApp button. keepalive lets the save finish after the page has moved on. */
   var PAY="https://secure.cardcom.solutions/EA/EA5/jC2n0la0SNnkrrGmfEg/PaymentSP";
-  d.querySelectorAll(".buyform").forEach(function(f){
+  var SRC={}, qs=new URLSearchParams(location.search);
+  ["utm_source","utm_medium","utm_campaign","utm_content","utm_term"].forEach(function(k){ var v=qs.get(k); if(v) SRC[k]=v; });
+  function saveLead(f,i){
+    var val=function(n){ var el=f.querySelector("[name="+n+"]"); return el?el.value:""; };
+    try{
+      fetch("/api/lead",{method:"POST",keepalive:true,headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({name:val("name"),phone:val("phone"),email:val("email"),form:String(i+1),src:SRC})}).catch(function(){});
+    }catch(err){}
+  }
+  d.querySelectorAll(".buyform").forEach(function(f,i){
     f.addEventListener("submit",function(e){ e.preventDefault(); if(!f.checkValidity()){ f.reportValidity(); return; }
+      saveLead(f,i);
       f.classList.add("sent"); if(window.fbq) fbq("track","InitiateCheckout",{value:297,currency:"ILS"});
       var v=function(n){ return f.querySelector("[name="+n+"]").value.trim(); }; /* f.name would be the form's own name, not the field */
       var q="?ExtCInvoiceTo="+encodeURIComponent(v("name"))+"&ExtCUserEmail="+encodeURIComponent(v("email"))+"&ExtMobilPhone="+encodeURIComponent(v("phone").replace(/[^\d+]/g,""));

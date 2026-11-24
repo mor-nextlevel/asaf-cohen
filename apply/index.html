@@ -27,7 +27,7 @@ body{min-height:100svh;background:radial-gradient(90% 50% at 50% -14%,rgba(var(-
 .saved.err{color:var(--no)}.saved.err svg{display:none}
 
 /* every screen sits in the same grid cell; only one is shown */
-.stage{position:relative;z-index:1;display:grid;min-height:100svh;padding:clamp(92px,13vh,120px) clamp(20px,5vw,40px) clamp(104px,14vh,130px)}
+.stage{position:relative;z-index:1;display:grid;min-height:100svh;padding:clamp(92px,13vh,120px) clamp(20px,5vw,40px) clamp(110px,15vh,140px)}
 .scr{grid-area:1/1;align-self:center;justify-self:center;width:100%;max-width:640px;
   opacity:0;visibility:hidden;transform:translateY(46px);pointer-events:none;
   transition:opacity .45s var(--ease),transform .65s var(--ease-out),visibility 0s .65s}
@@ -57,26 +57,27 @@ body{min-height:100svh;background:radial-gradient(90% 50% at 50% -14%,rgba(var(-
 .opt.blink{animation:blink .42s steps(1) 1}
 @keyframes blink{0%,50%{background:rgba(var(--a1-rgb),.22)}25%,75%{background:rgba(var(--a1-rgb),.05)}}
 @media (hover:hover){.opt:hover{background:rgba(var(--a2-rgb),.1);border-color:rgba(var(--a2-rgb),.55)}.opt.sel:hover{background:rgba(var(--a1-rgb),.13);border-color:var(--a1)}}
+.multi .help{color:var(--a2-soft)}
 
-/* typed answers */
+/* typed answer */
 .fields{display:grid;gap:clamp(18px,3vh,26px);margin-top:clamp(22px,4vh,32px);max-width:560px}
-.fld label{display:block;font-size:15px;color:var(--t-mid);margin-bottom:4px}
 .in{width:100%;padding:8px 2px 10px;border:0;border-bottom:2px solid rgba(var(--a2-rgb),.35);border-radius:0;background:none;outline:none;
   font:400 clamp(21px,3vw,28px)/1.3 var(--sans);color:var(--a2-soft);caret-color:var(--a1);transition:border-color .25s}
 .in::placeholder{color:rgba(var(--ivory-rgb),.28)}
 .in:focus{border-bottom-color:var(--a2)}
-.in.bad{border-bottom-color:var(--no)}
-.err{min-height:22px;margin-top:6px;font-size:14px;color:var(--no)}
 
 /* buttons */
 .act{display:flex;align-items:center;flex-wrap:wrap;gap:14px 20px;margin-top:clamp(24px,4vh,34px)}
-.act .btn{padding:16px 36px;font-size:clamp(17px,1.9vw,19px)}
-.act .btn[disabled]{opacity:.45;pointer-events:none;box-shadow:none}
+.act .btn{padding:16px 40px;font-size:clamp(17px,1.9vw,19px)}
+.act .btn[disabled]{opacity:.4;pointer-events:none;box-shadow:none}
 .enter{font-size:14px;color:var(--t-low)}
 .enter b{font-weight:700;color:var(--t-mid)}
 .ghost{background:none;border:0;padding:8px 2px;cursor:pointer;font:500 16px/1.2 var(--sans);color:var(--t-mid);
   text-decoration:underline;text-decoration-color:rgba(var(--ivory-rgb),.3);text-underline-offset:5px;transition:color .2s}
 .ghost:hover{color:var(--t-hi)}
+/* a single-answer question moves on by itself; its button shows only when coming back to it */
+.single .act{display:none}
+.single.has .act{display:flex}
 @media (hover:none),(pointer:coarse){.enter{display:none}}
 
 /* welcome */
@@ -84,14 +85,14 @@ body{min-height:100svh;background:radial-gradient(90% 50% at 50% -14%,rgba(var(-
 .face{position:relative;width:104px;height:104px;margin:0 auto 22px}
 .face::before{content:"";position:absolute;inset:-18px;border-radius:50%;background:radial-gradient(closest-side,rgba(var(--a1-rgb),.45),transparent);filter:blur(14px)}
 .face img{position:relative;width:100%;height:100%;border-radius:50%;padding:3px;background:var(--name-grad)}
-.kick{color:var(--a2-soft);font-weight:500;font-size:clamp(16px,1.8vw,18px);margin-bottom:10px}
-.hi h1{font-size:clamp(38px,8vw,66px);line-height:1.05;padding-bottom:.08em}
-.hi .sub{max-width:460px;margin:14px auto 0}
-.hi .act{justify-content:center;margin-top:clamp(28px,5vh,40px)}
-.meta{display:flex;align-items:center;justify-content:center;gap:7px;margin-top:18px;font-size:14px;color:var(--t-low)}
-.meta svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+.kick{color:var(--a2-soft);font-weight:500;font-size:clamp(16px,1.8vw,19px);margin-bottom:10px}
+.hi h1{font-size:clamp(40px,8.4vw,72px);line-height:1.05;padding-bottom:.08em}
+.hi .sub{max-width:480px;margin:16px auto 0}
+.hi .sub b{font-weight:700;color:var(--t-hi)}
+.hi .act{justify-content:center;margin-top:clamp(30px,5vh,44px)}
+.hi .act .btn{min-width:320px;padding:24px 60px;font-size:clamp(21px,2.4vw,25px)}
 
-/* done */
+/* done = the thank-you page */
 .end{text-align:center}
 .okc{width:84px;height:84px;margin:0 auto 22px;border-radius:50%;display:grid;place-items:center;
   background:rgba(var(--a2-rgb),.07);border:1px solid var(--a2-line);box-shadow:0 0 50px -10px rgba(var(--a2-rgb),.5)}
@@ -99,30 +100,52 @@ body{min-height:100svh;background:radial-gradient(90% 50% at 50% -14%,rgba(var(-
 .okc path{stroke-dasharray:24;stroke-dashoffset:24}
 .end.on .okc path{animation:draw .6s .45s var(--ease-out) forwards}
 @keyframes draw{to{stroke-dashoffset:0}}
-.end h1{font-size:clamp(40px,8vw,68px);line-height:1.05;padding-bottom:.08em}
+.end h1{font-size:clamp(44px,9vw,76px);line-height:1.05;padding-bottom:.08em}
 .end .sub{max-width:440px;margin:12px auto 0}
-.ig{display:inline-flex;align-items:center;justify-content:center;gap:12px;width:min(100%,340px);min-height:60px;margin-top:clamp(30px,5vh,42px);padding:10px 22px;border-radius:999px;
-  text-decoration:none;color:var(--t-hi);font-weight:700;font-size:17px;
-  background:linear-gradient(165deg,rgba(255,255,255,.07),rgba(255,255,255,.02));border:1px solid rgba(var(--ivory-rgb),.14);
+.end .sub b{font-weight:700;color:var(--t-hi)}
+.end__q{margin:clamp(34px,6vh,48px) 0 14px;font-weight:500;font-size:clamp(17px,1.9vw,19px);color:var(--t-mid)}
+.wa{display:inline-flex;align-items:center;justify-content:center;gap:12px;width:min(100%,360px);min-height:62px;padding:10px 24px;border-radius:999px;
+  text-decoration:none;color:var(--t-hi);font-weight:700;font-size:18px;
+  background:linear-gradient(165deg,rgba(255,255,255,.07),rgba(255,255,255,.02));border:1px solid rgba(37,211,102,.4);
   transition:border-color .3s,box-shadow .3s,transform .3s var(--ease-out)}
-.ig svg{flex:none;width:32px;height:32px}
-.ig:hover{transform:translateY(-2px);border-color:rgba(214,36,159,.6);box-shadow:0 10px 34px -12px rgba(214,36,159,.55)}
+.wa svg{flex:none;width:32px;height:32px}
+.wa:hover{transform:translateY(-2px);border-color:rgba(37,211,102,.75);box-shadow:0 10px 34px -12px rgba(37,211,102,.6)}
 
-/* previous / next, bottom corner */
-.nav{position:fixed;z-index:5;bottom:calc(18px + env(safe-area-inset-bottom));left:clamp(18px,4vw,36px);display:flex;gap:6px;transition:opacity .3s}
-.nav[hidden]{display:flex;opacity:0;pointer-events:none}
-.nav button{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;cursor:pointer;color:var(--t-hi);
-  background:rgba(var(--a2-rgb),.07);border:1px solid rgba(var(--a2-rgb),.25);transition:background .2s,opacity .2s}
-.nav button:hover{background:rgba(var(--a2-rgb),.16)}
-.nav button[disabled]{opacity:.3;pointer-events:none}
-.nav svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+/* back */
+.back{position:fixed;z-index:5;bottom:calc(18px + env(safe-area-inset-bottom));right:clamp(16px,4vw,36px);
+  display:inline-flex;align-items:center;gap:8px;height:46px;padding:0 18px 0 20px;border-radius:999px;cursor:pointer;
+  font:500 16px/1 var(--sans);color:var(--t-hi);background:rgba(var(--bg-rgb),.75);border:1px solid rgba(var(--a2-rgb),.3);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transition:background .2s,border-color .2s,opacity .3s}
+.back:hover{background:rgba(var(--a2-rgb),.12);border-color:rgba(var(--a2-rgb),.6)}
+.back svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.back[hidden]{display:inline-flex;opacity:0;pointer-events:none}
 
+/* desktop: everything a size up */
+@media (min-width:900px){
+  .scr{max-width:760px}
+  .num{font-size:17px}
+  .pre{font-size:21px}
+  .q{font-size:clamp(36px,3.3vw,46px)}
+  .help{font-size:20px}
+  .opts,.fields{max-width:680px;gap:12px}
+  .opt{min-height:68px;padding:16px 20px;gap:16px;font-size:21px;border-radius:16px}
+  .k{width:32px;height:32px;font-size:16px;border-radius:9px}
+  .opt .tick{width:24px;height:24px}
+  .in{font-size:32px}
+  .act .btn{padding:19px 48px;font-size:21px}
+  .enter{font-size:15px}
+  .ghost{font-size:18px}
+  .back{height:52px;padding:0 22px 0 24px;font-size:18px}
+  .back svg{width:20px;height:20px}
+}
 @media (max-width:560px){
   .bar{padding-inline:16px}
   .stage{padding-inline:16px}
   .opt{min-height:56px;padding:12px 14px;gap:12px}
-  .act .btn{width:100%;padding:17px 20px}
-  .hi .act,.act{flex-direction:column;align-items:stretch}
+  .act{flex-direction:column;align-items:stretch}
+  .act .btn,.hi .act .btn{width:100%;min-width:0}
+  .act .btn{padding:18px 20px}
+  .hi .act .btn{padding:23px 20px;font-size:22px}
   .ghost{align-self:center}
 }
 @media (prefers-reduced-motion:reduce){
@@ -132,7 +155,7 @@ body{min-height:100svh;background:radial-gradient(90% 50% at 50% -14%,rgba(var(-
   .okc path{stroke-dashoffset:0}.end.on .okc path{animation:none}
 }
 </style>
-<!-- Meta Pixel: Spacho Pixel. PageView, and one ApplicationComplete when the questionnaire is finished -->
+<!-- Meta Pixel: Spacho Pixel. PageView, and one ApplicationComplete when the questionnaire is sent -->
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
@@ -154,45 +177,42 @@ fbq('track','PageView');
   <main class="stage" id="stage">
     <section class="scr hi" data-step="welcome">
       <div class="face"><img src="/assets/a/asaf-face.webp" alt="אסף כהן" width="104" height="104"></div>
-      <p class="kick" id="kick">שאלון קצר</p>
-      <h1>עוד כמה שאלות <span class="gt-a1">קצרות</span></h1>
-      <p class="sub">ככה אסף יידע מאיפה אתה מתחיל ולאן אתה רוצה להגיע.</p>
-      <div class="act"><button class="btn" type="button" data-go="next">בוא נתחיל</button><span class="enter">או ללחוץ <b>אנטר ↵</b></span></div>
-      <p class="meta"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>לוקח פחות מדקה</p>
+      <p class="kick" id="kick">רגע לפני שממשיכים</p>
+      <h1>שאלון של <span class="gt-a1">20 שניות</span></h1>
+      <p class="sub"><b>חשוב מאוד למלא אותו עד הסוף.</b> ככה אדע מאיפה אתה מתחיל ולאן אתה רוצה להגיע.</p>
+      <div class="act"><button class="btn" type="button" data-go="next">בוא נתחיל</button></div>
     </section>
     <!-- the questions are built from QUESTIONS below -->
     <section class="scr end" data-step="done">
       <div class="okc"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
-      <h1 class="gt-a1" id="endTitle">קיבלנו, תודה.</h1>
-      <p class="sub">אסף יעבור על התשובות שלך ויחזור אליך.</p>
-      <a class="ig" href="https://www.instagram.com/spacho_music/" target="_blank" rel="noopener">
-        <svg viewBox="0 0 32 32" aria-hidden="true"><defs><radialGradient id="igG" cx="30%" cy="107%" r="150%"><stop offset="0" stop-color="#fdf497"/><stop offset=".05" stop-color="#fdf497"/><stop offset=".45" stop-color="#fd5949"/><stop offset=".6" stop-color="#d6249f"/><stop offset=".9" stop-color="#285aeb"/></radialGradient></defs><rect width="32" height="32" rx="9" fill="url(#igG)"/><rect x="8" y="8" width="16" height="16" rx="5" fill="none" stroke="#fff" stroke-width="2.2"/><circle cx="16" cy="16" r="3.9" fill="none" stroke="#fff" stroke-width="2.2"/><circle cx="20.7" cy="11.3" r="1.25" fill="#fff"/></svg>
-        <span>בינתיים, תעקוב אחריי באינסטגרם</span></a>
+      <h1 class="gt-a1" id="endTitle">קיבלתי!</h1>
+      <p class="sub"><b>אני חוזר אליך בשעות הקרובות.</b></p>
+      <p class="end__q">רוצה לקצר את התהליך?</p>
+      <a class="wa" id="wa" href="https://wa.me/972503344778" target="_blank" rel="noopener"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="waG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#61fd7d"/><stop offset="1" stop-color="#25cf43"/></linearGradient></defs><circle cx="16" cy="16" r="16" fill="url(#waG)"/><path transform="translate(6.2 6.2) scale(.817)" fill="#fff" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg><span>שלח לי הודעה בוואטסאפ</span></a>
     </section>
   </main>
 
-  <nav class="nav" id="nav" hidden aria-label="מעבר בין השאלות">
-    <button type="button" data-go="prev" aria-label="השאלה הקודמת"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 14.5l6-6 6 6"/></svg></button>
-    <button type="button" data-go="next" aria-label="השאלה הבאה"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9.5l6 6 6-6"/></svg></button>
-  </nav>
+  <button class="back" id="back" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>חזרה</button>
 </div>
 
 <script>
 (function(){
   var QUESTIONS=[
-    {key:"stage",q:"האם אתה מנגן היום מול קהל?",opts:["לא, רק בבית","כן, במסיבות של חברים","כן, בחתונות ובאירועים","כן, במועדונים ובליינים באופן קבוע"]},
+    {key:"stage",multi:true,only:[0],q:"האם אתה מנגן היום מול קהל?",opts:["לא, רק בבית","כן, במסיבות של חברים","כן, בחתונות ובאירועים","כן, במועדונים ובליינים באופן קבוע"]},
     {key:"production",q:"האם יש לך רקע בעולם ההפקה?",opts:["לא, אין לי רקע בכלל","התחלתי ללמוד, אבל עוד לא סיימתי אף טראק","יש לי כמה טראקים שהתחלתי ולא סיימתי","כבר הפקתי מוזיקה, אבל היא עוד לא נשמעת כמו במועדון"]},
-    {key:"goal",q:"מה המטרה שלך לשנה הקרובה?",opts:["לנגן בסט טראק שהפקתי בעצמי","להוציא טראק בלייבל","שיזמינו אותי לנגן במועדונים בזכות המוזיקה שלי","להתפרנס מהמוזיקה"]},
+    {key:"goal",multi:true,q:"מה המטרה שלך לשנה הקרובה?",opts:["לנגן בסט טראק שהפקתי בעצמי","להוציא טראק בלייבל","שיזמינו אותי לנגן במועדונים בזכות המוזיקה שלי","להתפרנס מהמוזיקה"]},
     {key:"hours",q:"כמה שעות בשבוע תוכל להקדיש ללמידה ולהפקה?",opts:["פחות משעתיים","בין 3 ל־5 שעות","בין 6 ל־10 שעות","יותר מ־10 שעות"]},
     {key:"invest",pre:"התוכנית דורשת השקעה רצינית של זמן וכסף.",q:"אם היא תתאים לך, האם אתה מוכן להשקיע בה?",opts:["כן, אני מוכן להתחיל עכשיו","כן, אם אפשר לפרוס לתשלומים","אני צריך קודם לארגן את הכסף","כרגע אין לי תקציב לזה"]},
     {key:"link",type:"link",q:"יש לך קישור שבו אפשר לשמוע אותך?",help:"סט, טראק, אינסטגרם או סאונדקלאוד"}
   ];
-  var LETTERS="אבגדהו", STORE="spacho_apply_v1", API="/api/apply";
-  var stage=document.getElementById("stage"), nav=document.getElementById("nav"), savedEl=document.getElementById("saved");
+  var LETTERS="אבגדהו", STORE="spacho_apply_v1", API="/api/apply", WA="972503344778";
+  var stage=document.getElementById("stage"), back=document.getElementById("back"), savedEl=document.getElementById("saved");
   var fine=matchMedia("(hover:hover) and (pointer:fine)").matches;
   var arrow='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>';
   var tick='<svg class="tick" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+  var enter='<span class="enter">או ללחוץ <b>אנטר ↵</b></span>';
   function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+  var byKey={};QUESTIONS.forEach(function(Q){byKey[Q.key]=Q});
 
   /* ---------- state: from the link, then this browser, then the server ---------- */
   var qs=new URLSearchParams(location.search), st=null;
@@ -211,31 +231,26 @@ fbq('track','PageView');
   try{history.replaceState(null,"",location.pathname+"?id="+st.id)}catch(e){}
 
   /* ---------- screens ---------- */
-  var needContact=!(st.contact.name&&st.contact.phone);
   var endEl=stage.querySelector('[data-step="done"]');
   QUESTIONS.forEach(function(Q,n){
-    var s=document.createElement("section");s.className="scr";s.dataset.step=Q.key;
-    var h='<p class="num">'+(n+1)+arrow+'</p>'+(Q.pre?'<p class="pre">'+esc(Q.pre)+'</p>':'')+'<h2 class="q" id="q-'+Q.key+'">'+esc(Q.q)+'</h2>'+(Q.help?'<p class="help">'+esc(Q.help)+'</p>':'');
+    var s=document.createElement("section");s.className="scr "+(Q.type?"":Q.multi?"multi":"single");s.dataset.step=Q.key;
+    var last=n===QUESTIONS.length-1;
+    var h='<p class="num">'+(n+1)+arrow+'</p>'+(Q.pre?'<p class="pre">'+esc(Q.pre)+'</p>':'')+'<h2 class="q" id="q-'+Q.key+'">'+esc(Q.q)+'</h2>'+
+      (Q.help?'<p class="help">'+esc(Q.help)+'</p>':Q.multi?'<p class="help">אפשר לבחור יותר מתשובה אחת</p>':'');
     if(Q.type==="link"){
-      h+='<div class="fields"><div class="fld"><input class="in" id="link" type="url" inputmode="url" dir="auto" autocomplete="url" placeholder="מדביקים כאן קישור" aria-labelledby="q-link"></div></div>'+
-         '<div class="act"><button class="btn" type="button" data-go="next" id="linkGo" disabled>המשך</button><button class="ghost" type="button" id="noLink">עוד אין לי קישור</button><span class="enter">או ללחוץ <b>אנטר ↵</b></span></div>';
+      h+='<div class="fields"><input class="in" id="link" type="url" inputmode="url" dir="auto" autocomplete="url" placeholder="מדביקים כאן קישור" aria-labelledby="q-link"></div>'+
+         '<div class="act"><button class="btn" type="button" data-go="next" id="linkGo" disabled>שליחה</button><button class="ghost" type="button" id="noLink">עוד אין לי קישור, לשלוח בלי</button>'+enter+'</div>';
     }else{
-      h+='<div class="opts" role="radiogroup" aria-labelledby="q-'+Q.key+'">'+Q.opts.map(function(o,i){
-        return '<button class="opt" type="button" role="radio" aria-checked="false" data-i="'+i+'"><span class="k">'+LETTERS[i]+'</span><span>'+esc(o)+'</span>'+tick+'</button>'}).join("")+'</div>';
+      var role=Q.multi?"checkbox":"radio";
+      h+='<div class="opts" role="'+(Q.multi?"group":"radiogroup")+'" aria-labelledby="q-'+Q.key+'">'+Q.opts.map(function(o,i){
+        return '<button class="opt" type="button" role="'+role+'" aria-checked="false" data-i="'+i+'"><span class="k">'+LETTERS[i]+'</span><span>'+esc(o)+'</span>'+tick+'</button>'}).join("")+'</div>'+
+        '<div class="act"><button class="btn" type="button" data-go="next"'+(Q.multi?' disabled':'')+'>'+(last?"שליחה":"המשך")+'</button>'+enter+'</div>';
     }
     s.innerHTML=h;stage.insertBefore(s,endEl);
   });
-  if(needContact){
-    var c=document.createElement("section");c.className="scr";c.dataset.step="contact";
-    c.innerHTML='<p class="num">'+(QUESTIONS.length+1)+arrow+'</p><h2 class="q">איך אפשר לחזור אליך?</h2>'+
-      '<div class="fields"><div class="fld"><label for="cName">שם</label><input class="in" id="cName" autocomplete="name" placeholder="השם שלך"></div>'+
-      '<div class="fld"><label for="cPhone">טלפון</label><input class="in" id="cPhone" type="tel" inputmode="tel" dir="ltr" style="text-align:right" autocomplete="tel" placeholder="050-0000000"><p class="err" id="cErr"></p></div></div>'+
-      '<div class="act"><button class="btn" type="button" data-go="next" id="cGo">שליחה</button><span class="enter">או ללחוץ <b>אנטר ↵</b></span></div>';
-    stage.insertBefore(c,endEl);
-  }
   var screens=[].slice.call(stage.querySelectorAll(".scr")), order=screens.map(function(s){return s.dataset.step});
   var first=(st.contact.name||"").split(/\s+/)[0];
-  if(first)document.getElementById("kick").textContent="היי "+first+",";
+  if(first)document.getElementById("kick").textContent="היי "+first+", רגע לפני שממשיכים";
 
   /* ---------- saving: every answer goes to the server right away ---------- */
   var busy=false,again=false,tries=0,savedTimer;
@@ -261,11 +276,11 @@ fbq('track','PageView');
 
   /* ---------- moving between screens ---------- */
   var cur=0;
+  function chosen(key){var a=st.answers[key];return a?[].concat(a.i):[]}
   function answered(step){
     if(step==="welcome")return true;
     if(step==="link")return !!(st.link.trim()||st.noLink);
-    if(step==="contact")return contactOk(false);
-    return !!st.answers[step];
+    return chosen(step).length>0;
   }
   function show(i,instant){
     i=Math.max(0,Math.min(order.length-1,i));
@@ -275,79 +290,63 @@ fbq('track','PageView');
       if("inert" in s)s.inert=j!==i;
     });
     cur=i;st.step=order[i];
-    var step=order[i];
-    nav.hidden=(step==="welcome"||step==="done");
-    nav.querySelector('[data-go="prev"]').disabled=i<=1;
-    nav.querySelector('[data-go="next"]').disabled=!answered(step)||order[i+1]==="done";
-    if(fine){var f=screens[i].querySelector(".in");if(f)setTimeout(function(){f.focus({preventScroll:true})},instant?0:420)}
+    var step=order[i],s=screens[i];
+    s.classList.toggle("has",answered(step));
+    back.hidden=(step==="welcome"||step==="done");
+    if(fine){var f=s.querySelector(".in");if(f)setTimeout(function(){f.focus({preventScroll:true})},instant?0:420)}
     if(step==="done"){
       var nm=(st.contact.name||"").split(/\s+/)[0];
-      document.getElementById("endTitle").textContent=nm?"קיבלנו, תודה "+nm+".":"קיבלנו, תודה.";
+      document.getElementById("endTitle").textContent=nm?"קיבלתי, "+nm+"!":"קיבלתי!";
+      document.getElementById("wa").href="https://wa.me/"+WA+"?text="+encodeURIComponent("היי אסף"+(nm?", זה "+nm:"")+". מילאתי עכשיו את השאלון ואשמח לדבר.");
       if(!st.done){st.done=true;try{fbq("trackCustom","ApplicationComplete")}catch(e){}}
     }
     if(worth())save();else local();
   }
-  function next(){
-    var step=order[cur];
-    if(step==="contact"&&!contactOk(true))return;
-    if(step==="link"&&!answered("link"))return;
-    if(!answered(step))return;
-    show(cur+1);
-  }
+  function next(){if(answered(order[cur]))show(cur+1)}
   stage.addEventListener("click",function(e){
-    var o=e.target.closest(".opt");
-    if(o){pick(o);return}
-    var g=e.target.closest("[data-go]");if(g)g.dataset.go==="next"?next():show(cur-1);
+    var o=e.target.closest(".opt");if(o){pick(o);return}
+    var g=e.target.closest("[data-go]");if(g)next();
   });
-  nav.addEventListener("click",function(e){var g=e.target.closest("[data-go]");if(g)g.dataset.go==="next"?next():show(cur-1)});
+  back.addEventListener("click",function(){show(cur-1)});
 
+  function paintQ(s){
+    var key=s.dataset.step,on=chosen(key),btn=s.querySelector("[data-go]");
+    s.querySelectorAll(".opt").forEach(function(b){var y=on.indexOf(+b.dataset.i)>=0;b.classList.toggle("sel",y);b.setAttribute("aria-checked",y?"true":"false")});
+    if(btn&&byKey[key]&&byKey[key].multi)btn.disabled=!on.length;
+  }
   var lock=false;
   function pick(o){
     if(lock)return;
-    var s=o.closest(".scr"),key=s.dataset.step,i=+o.dataset.i;
-    s.querySelectorAll(".opt").forEach(function(b){var on=b===o;b.classList.toggle("sel",on);b.setAttribute("aria-checked",on?"true":"false")});
-    st.answers[key]={i:i,label:o.querySelector("span:nth-child(2)").textContent};
+    var s=o.closest(".scr"),key=s.dataset.step,Q=byKey[key],i=+o.dataset.i;
     o.classList.remove("blink");void o.offsetWidth;o.classList.add("blink");
-    lock=true;save();
+    if(Q.multi){
+      // several answers; an answer marked "only" clears the rest, and the rest clear it
+      var on=chosen(key),at=on.indexOf(i),only=Q.only||[];
+      if(at>=0)on.splice(at,1);
+      else if(only.indexOf(i)>=0)on=[i];
+      else{on=on.filter(function(x){return only.indexOf(x)<0});on.push(i)}
+      on.sort();
+      if(on.length)st.answers[key]={i:on,label:on.map(function(x){return Q.opts[x]}).join(" | ")};else delete st.answers[key];
+      paintQ(s);save();return;
+    }
+    st.answers[key]={i:i,label:Q.opts[i]};
+    paintQ(s);lock=true;save();
     setTimeout(function(){lock=false;if(order[cur]===key)show(cur+1)},480);
   }
 
-  /* typed answers */
+  /* typed answer */
   var link=document.getElementById("link"),linkGo=document.getElementById("linkGo");
-  link.value=st.link||"";linkGo.disabled=!link.value.trim();
-  link.addEventListener("input",function(){st.link=link.value;st.noLink=false;linkGo.disabled=!link.value.trim();nav.querySelector('[data-go="next"]').disabled=!answered("link");saveSoon()});
+  link.addEventListener("input",function(){st.link=link.value;st.noLink=false;linkGo.disabled=!link.value.trim();saveSoon()});
   link.addEventListener("blur",function(){if(st.link)save()});
   document.getElementById("noLink").addEventListener("click",function(){st.link="";link.value="";st.noLink=true;linkGo.disabled=true;show(cur+1)});
-
-  var cName=document.getElementById("cName"),cPhone=document.getElementById("cPhone"),cErr=document.getElementById("cErr");
-  function phoneOk(p){var d=p.replace(/[^\d+]/g,"");return /^(\+?972|0)5\d{8}$/.test(d)||/^0[2-9]\d{7}$/.test(d)}
-  function contactOk(loud){
-    if(!needContact)return true;
-    var okN=cName.value.trim().length>=2,okP=phoneOk(cPhone.value);
-    if(loud){
-      cName.classList.toggle("bad",!okN);cPhone.classList.toggle("bad",!okP);
-      cErr.textContent=!okN?"צריך לכתוב שם":!okP?"צריך מספר טלפון תקין, למשל 050-1234567":"";
-      if(!okN)cName.focus();else if(!okP)cPhone.focus();
-    }
-    return okN&&okP;
-  }
-  if(needContact){
-    cName.value=st.contact.name||"";cPhone.value=st.contact.phone||"";
-    [cName,cPhone].forEach(function(el){
-      el.addEventListener("input",function(){st.contact.name=cName.value.trim();st.contact.phone=cPhone.value.trim();el.classList.remove("bad");cErr.textContent="";saveSoon()});
-      el.addEventListener("blur",function(){if(cName.value||cPhone.value)save()});
-    });
-  }
 
   /* keyboard: letters or numbers pick, Enter moves on */
   document.addEventListener("keydown",function(e){
     if(e.metaKey||e.ctrlKey||e.altKey)return;
-    var step=order[cur],s=screens[cur],typing=e.target.tagName==="INPUT";
+    var s=screens[cur],typing=e.target.tagName==="INPUT";
     if(e.key==="Enter"){
       if(e.target.tagName==="BUTTON"&&!e.target.matches("[data-go]"))return;
-      e.preventDefault();
-      if(step==="contact"&&e.target===cName){cPhone.focus();return}
-      next();return;
+      e.preventDefault();next();return;
     }
     if(typing)return;
     var opts=s.querySelectorAll(".opt");if(!opts.length)return;
@@ -357,20 +356,12 @@ fbq('track','PageView');
   });
 
   /* restore: mark what was answered, then pick up where they stopped */
-  function paint(){
-    Object.keys(st.answers).forEach(function(k){
-      var a=st.answers[k],s=stage.querySelector('[data-step="'+k+'"]');if(!s)return;
-      s.querySelectorAll(".opt").forEach(function(b){var on=+b.dataset.i===a.i;b.classList.toggle("sel",on);b.setAttribute("aria-checked",on?"true":"false")});
-    });
-    link.value=st.link||"";linkGo.disabled=!link.value.trim();
-    if(needContact){cName.value=st.contact.name||"";cPhone.value=st.contact.phone||""}
-  }
   function resume(){
-    paint();
+    screens.forEach(function(s){if(byKey[s.dataset.step]&&!byKey[s.dataset.step].type)paintQ(s)});
+    link.value=st.link||"";linkGo.disabled=!link.value.trim();
     var at=st.done?order.indexOf("done"):Math.max(0,order.indexOf(st.step));
     show(at,true);
   }
-  document.documentElement.classList.add("js");
   if(urlId&&!Object.keys(st.answers).length){
     fetch(API+"?id="+encodeURIComponent(urlId)).then(function(r){return r.ok?r.json():null}).then(function(d){
       if(d&&d.rec){var keep=st.contact;st=Object.assign(fresh(),d.rec);["name","email","phone"].forEach(function(k){if(incoming[k])st.contact[k]=keep[k]})}

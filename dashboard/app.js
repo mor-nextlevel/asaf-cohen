@@ -283,7 +283,7 @@
       <div class="crumbs">${ic('house', 14)}<span>נקסט לבל</span>${ic('chevron-left', 13)}<span>אסף כהן</span>${ic('chevron-left', 13)}<b style="color:var(--ink)">לוח המעקב</b></div>
       <div class="ttl"><div class="row" style="gap:14px"><img class="as-av" src="/img/asaf.jpg" alt=""><div><h2 id="hdrTitle">לוח המעקב של אסף <span class="tag t-ok" id="hdrTag" style="font-size:12px">מתעדכן חי</span></h2><div class="cd-s" id="hdrSub" style="font-size:13.5px"></div></div></div>
       <div class="row as-btns" style="gap:8px"><div id="picker"></div><button class="btn" id="btnRefresh" type="button">${ic('refresh-cw', 15)}רענון</button><button class="btn" id="btnExport" type="button">${ic('download', 15)}ייצוא</button></div></div>
-      <div class="utabs"><button class="on" data-go="s-top" type="button">סקירה</button><button data-go="s-sales" type="button">מכירות</button><button data-go="s-ads" type="button">מודעות</button><button data-go="s-people" type="button">אנשים</button></div></div>`;
+      <div class="utabs"><button class="on" data-go="s-top" type="button">סקירה</button><button data-go="s-aband" type="button">נוטשים</button><button data-go="s-sales" type="button">מכירות</button><button data-go="s-ads" type="button">מודעות</button><button data-go="s-people" type="button">אנשים</button></div></div>`;
   }
 
   function paintHeader(X) {
@@ -514,6 +514,107 @@
     }));
   }
 
+  /* --------------------------------- נוטשים --------------------------------- */
+
+  /* מי שמילא את הטופס בדף ולא קנה, בלי קשר לטווח שבבורר: זו רשימת עבודה של הימים האחרונים.
+     השרת כבר הוריד את מי שנמצא ברשימת הרוכשים ואיחד מילויים כפולים של אותו אדם.
+     לחיצה על וואטסאפ פותחת שיחה עם ההודעה מההגדרות ומסמנת ״פנית״ בשרת, כדי שרענון,
+     מכשיר אחר או אסף ומור יחד יראו את אותו מצב */
+  let abTab = 'todo';
+  let abPage = 0;
+  const abMarks = {};
+  const AB_PER_PAGE = 8;
+
+  const nowIL = () => new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Jerusalem' }).slice(0, 19);
+  /* שני הצדדים בשעון ישראל, אז ההפרש נכון גם בשעון קיץ */
+  const ago = (ts) => {
+    const asUtc = (s) => new Date(String(s).replace(' ', 'T') + 'Z').getTime();
+    const t = asUtc(ts);
+    if (isNaN(t)) return '';
+    const m = Math.max(0, Math.round((asUtc(nowIL()) - t) / 60000));
+    if (m < 1) return 'עכשיו';
+    if (m < 60) return `לפני ${m} דק׳`;
+    const h = Math.round(m / 60);
+    if (h < 24) return h === 1 ? 'לפני שעה' : h === 2 ? 'לפני שעתיים' : `לפני ${h} שעות`;
+    const d = Math.round(h / 24);
+    return d === 1 ? 'אתמול' : d === 2 ? 'לפני יומיים' : `לפני ${d} ימים`;
+  };
+  const contactedAt = (p) => (p.key in abMarks ? abMarks[p.key] : p.contactedAt);
+  const abMessage = (p) => {
+    const first = String(p.name || '').trim().split(/\s+/)[0] || '';
+    return String(DATA.abandon.message || '').replace(/\s*\{name\}/g, first ? ' ' + first : '').trim();
+  };
+
+  function markContacted(key, undo) {
+    abMarks[key] = undo ? '' : nowIL();
+    renderAbandon();
+    if (DATA.demo) return;
+    fetch('/api/abandon?k=' + encodeURIComponent(code), {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ key, undo: !!undo }),
+    }).then((r) => { if (!r.ok) throw new Error(r.status); }).catch(() => {
+      delete abMarks[key];
+      renderAbandon();
+      const el = document.getElementById('abErr');
+      if (el) el.textContent = 'הסימון לא נשמר, כדאי לנסות שוב';
+    });
+  }
+
+  function abRow(p) {
+    const done = contactedAt(p);
+    const href = waHref(p.phone, abMessage(p));
+    const from = p.from.includes('cart') ? '<span class="tag t-gray">הגיע לדף התשלום</span>' : '<span class="tag t-gray">מילא טופס בדף</span>';
+    const again = p.times > 1 ? `<span class="tag t-warn">${num(n(p.times))} פעמים</span>` : '';
+    const state = done ? `<span class="tag t-ok">פנית ${esc(when(done))}</span>` : '';
+    const btn = href
+      ? `<a class="as-wa as-wa-big${done ? ' again' : ''}" href="${esc(href)}" target="whatsapp" rel="noopener" data-ab="${esc(p.key)}">${ic('message-circle', 16)}${done ? 'שוב בוואטסאפ' : 'שלח וואטסאפ'}</a>`
+      : `<span class="tag t-gray">אין טלפון${p.email ? ', רק מייל' : ''}</span>`;
+    const undo = done ? `<button class="as-ab-undo" type="button" data-unab="${esc(p.key)}">${ic('corner-down-left', 13)}החזר לרשימה</button>` : '';
+    return `<div class="as-ab-row${done ? ' done' : ''}">
+      <div class="as-ab-who">${av(p.name || '?', 38)}<div style="min-width:0"><b>${esc(p.name || 'בלי שם')}</b>
+        <div class="as-ab-meta"><span class="n as-ph">${esc(p.phone || '')}</span>${p.email ? `<span class="as-mail">${esc(p.email)}</span>` : ''}</div></div></div>
+      <div class="as-ab-tags"><span class="as-ab-when" title="${esc(when(p.at))}">${ic('clock', 13)}${esc(ago(p.at))}</span>${from}${again}${state}</div>
+      <div class="as-ab-act">${undo}${btn}</div></div>`;
+  }
+
+  function renderAbandon() {
+    const el = document.getElementById('abd');
+    const A = DATA.abandon || {};
+    const head = (count, sub) => `<div class="cd-h"><div><div class="cd-t">${ic('shopping-bag', 17)} נטשו את העגלה ${count}</div><div class="cd-s">${sub}</div></div></div>`;
+    if (!A.ready) {
+      el.innerHTML = `<div class="cd as-ab">${head('', 'מי שממלא את הטופס בדף ולא קונה יופיע כאן עם כפתור וואטסאפ')}<div class="as-empty">החיבור לרשימת הרוכשים עוד לא הוגדר, ובלעדיו אי אפשר לדעת מי לא קנה</div></div>`;
+      return;
+    }
+    if (A.error) {
+      el.innerHTML = `<div class="cd as-ab">${head('', 'מי שמילא את הטופס בדף ולא קנה')}<div class="as-empty">${ic('circle-alert', 15)} לא הצלחתי למשוך את הנוטשים · ${esc(A.error)}</div></div>`;
+      return;
+    }
+    const all = A.people || [];
+    /* סימון מקומי יורד ברגע שהשרת כבר מחזיר אותו בעצמו */
+    all.forEach((p) => { if (p.key in abMarks && !!abMarks[p.key] === !!p.contactedAt) delete abMarks[p.key]; });
+    const todo = all.filter((p) => !contactedAt(p));
+    const done = all.filter((p) => contactedAt(p)).sort((a, b) => (contactedAt(a) < contactedAt(b) ? 1 : -1));
+    const rows = abTab === 'done' ? done : todo;
+    const pages = Math.max(1, Math.ceil(rows.length / AB_PER_PAGE));
+    abPage = Math.min(abPage, pages - 1);
+    const waitNote = A.waiting ? ` · ועוד ${num(n(A.waiting))} שמילאו ב${n(A.waitMinutes)} הדקות האחרונות ואולי עוד משלמים` : '';
+    /* בימים הראשונים הכרטיס ״נטשו את העגלה״ למעלה (מהפיקסל) גדול מהרשימה, כי לפני היום הזה אף אחד לא נשמר */
+    const young = A.since && addDays(DATA.today, -(A.days - 1)) < A.since;
+    const sinceNote = young ? `<div class="as-note">${ic('info', 14)}<span>הדף שומר את מי שממלא את הטופס מ ${num(dm(A.since))}. מי שנטש לפני זה לא נשמר באף מקום, ולכן אין לו שורה כאן.</span></div>` : '';
+    const empty = abTab === 'done' ? 'עוד לא פנית לאף אחד מהרשימה'
+      : all.length ? 'פנית לכולם. כל הכבוד' : `אין נוטשים ב${n(A.days)} הימים האחרונים. מי שימלא את הטופס בדף ולא יקנה יופיע כאן`;
+    const badge = todo.length ? `<span class="tag t-bad as-ab-count">${num(n(todo.length))} מחכים להודעה</span>` : '';
+    el.innerHTML = `<div class="cd as-ab">${head(badge, `מילאו פרטים בדף ולא קנו, ${n(A.days)} הימים האחרונים. הכפתור פותח וואטסאפ עם הודעה מוכנה${waitNote}`)}
+      <div class="utabs as-tabs"><button data-abt="todo" class="${abTab === 'todo' ? 'on' : ''}" type="button">מחכים להודעה<span class="n">${todo.length}</span></button><button data-abt="done" class="${abTab === 'done' ? 'on' : ''}" type="button">כבר פנית<span class="n">${done.length}</span></button></div>
+      <div class="as-ab-list">${rows.slice(abPage * AB_PER_PAGE, abPage * AB_PER_PAGE + AB_PER_PAGE).map(abRow).join('') || `<div class="as-empty">${empty}</div>`}</div>
+      ${pages > 1 ? `<div class="g-pg"><span>${num(n(abPage * AB_PER_PAGE + 1))} עד ${num(n(Math.min(rows.length, abPage * AB_PER_PAGE + AB_PER_PAGE)))} מתוך ${num(n(rows.length))}</span><div class="row" style="gap:6px"><button class="iconbtn" data-abpg="-1" type="button" aria-label="הקודם">${ic('chevron-right', 15)}</button><span class="n" style="font-size:12px">${abPage + 1}/${pages}</span><button class="iconbtn" data-abpg="1" type="button" aria-label="הבא">${ic('chevron-left', 15)}</button></div></div>` : ''}
+      ${sinceNote}<div class="as-err" id="abErr"></div></div>`;
+    el.querySelectorAll('[data-abt]').forEach((b) => (b.onclick = () => { abTab = b.dataset.abt; abPage = 0; renderAbandon(); }));
+    el.querySelectorAll('[data-abpg]').forEach((b) => (b.onclick = () => { abPage = Math.max(0, Math.min(pages - 1, abPage + Number(b.dataset.abpg))); renderAbandon(); }));
+    /* הקישור נפתח כרגיל, והסימון קורה ברקע. בלי preventDefault, כדי שהחלון ייפתח גם בספארי */
+    el.querySelectorAll('[data-ab]').forEach((a) => a.addEventListener('click', () => { const k = a.dataset.ab; setTimeout(() => markContacted(k), 0); }));
+    el.querySelectorAll('[data-unab]').forEach((b) => (b.onclick = () => markContacted(b.dataset.unab, true)));
+  }
+
   /* ---------------------------------- אנשים --------------------------------- */
 
   const TABS = {
@@ -533,10 +634,30 @@
     return src.map((t) => Object.assign({}, t, { amountAbs: Math.abs(t.amount) }));
   }
 
+  /* מספר בינלאומי בלי פלוס: 050 הופך ל־97250, ומספר מחו״ל נשאר כמו שהוא */
+  function waNumber(phone) {
+    const raw = String(phone || '').trim();
+    let d = raw.replace(/\D/g, '');
+    if (d.length < 9) return '';
+    if (raw.startsWith('+')) return d;
+    if (d.startsWith('00')) return d.slice(2);
+    if (d.startsWith('972')) return d;
+    if (d.startsWith('0')) return '972' + d.slice(1);
+    return d.length === 9 ? '972' + d : d;
+  }
+  /* במחשב ישר לוואטסאפ ווב, בלי דף הביניים של wa.me, ותמיד באותה לשונית, כי וואטסאפ ווב
+     פתוח בשתי לשוניות נועל אחת מהן. בטלפון ישר לאפליקציה */
+  const touch = () => window.matchMedia && window.matchMedia('(pointer:coarse)').matches;
+  function waHref(phone, text) {
+    const num = waNumber(phone);
+    if (!num) return '';
+    const t = text ? '&text=' + encodeURIComponent(text) : '';
+    return (touch() ? 'whatsapp://send?phone=' : 'https://web.whatsapp.com/send?phone=') + num + t;
+  }
   function waLink(phone, label) {
-    const d = String(phone || '').replace(/\D/g, '');
-    if (!d) return '';
-    return `<a class="as-wa" href="https://wa.me/972${esc(d.replace(/^0/, '').replace(/^972/, ''))}" target="_blank" rel="noopener">${ic('message-circle', 14)}${label}</a>`;
+    const href = waHref(phone);
+    if (!href) return '';
+    return `<a class="as-wa" href="${esc(href)}" target="whatsapp" rel="noopener">${ic('message-circle', 14)}${label}</a>`;
   }
 
   function statusTag(tab, p) {
@@ -682,6 +803,7 @@
     paintHeader(X);
     renderKpis(X);
     renderChecks(X);
+    renderAbandon();
     renderFunnel(X);
     renderCum(X);
     renderAds(X);
