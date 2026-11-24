@@ -178,3 +178,4 @@ body:not(.prem) #s-prem { display: none; }
   .pr-qa dd { margin-bottom: 8px; }
 }
 .pr-h .as-mail { direction: ltr; text-align: right; }
+.pr-nowa { flex-shrink: 0; }

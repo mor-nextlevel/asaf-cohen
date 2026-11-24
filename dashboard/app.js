@@ -806,7 +806,9 @@
 
   function premCard(p) {
     const c = p.contact || {}, f = firstName(p);
-    const wa = waLink(c.phone, 'וואטסאפ', f ? `היי ${f}, כאן אסף. ראיתי את השאלון שמילאת` : 'היי, כאן אסף. ראיתי את השאלון שמילאת', 'pr-wa');
+    /* בלי טלפון אין למי לשלוח: מי שנכנס ישר לשאלון ולא דרך הטופס בדף */
+    const wa = waLink(c.phone, 'וואטסאפ', f ? `היי ${f}, כאן אסף. ראיתי את השאלון שמילאת` : 'היי, כאן אסף. ראיתי את השאלון שמילאת', 'pr-wa') ||
+      '<span class="tag t-gray pr-nowa" title="נכנס ישר לשאלון, בלי הטופס בדף">בלי טלפון</span>';
     return `<article class="cd pr-card">
       <div class="pr-h"><div class="g-who">${av(c.name || '?', 36)}<div style="min-width:0"><b>${esc(c.name || 'בלי שם')}</b>${c.email ? `<span class="as-mail">${esc(c.email)}</span>` : ''}</div></div>${wa}</div>
       <div class="pr-meta">${premStatus(p)}${c.phone ? `<span class="n as-ph">${esc(c.phone)}</span>` : ''}<span class="muted">${ic('clock', 13)}${num(ilTime(p.updated || p.started))}</span></div>
