@@ -611,6 +611,7 @@ export default async function handler(req, res) {
       ready: DEMO || (HAS_BLOB && HAS_RM && AB_BUYERS > 0),
       days: AB_DAYS,
       waitMinutes: Math.round(AB_WAIT_MS / 60000),
+      since: String(S.abandonSince || ''),
       message: String(S.abandonMessage || ''),
     },
   };

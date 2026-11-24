@@ -597,6 +597,9 @@
     const pages = Math.max(1, Math.ceil(rows.length / AB_PER_PAGE));
     abPage = Math.min(abPage, pages - 1);
     const waitNote = A.waiting ? ` · ועוד ${num(n(A.waiting))} שמילאו ב${n(A.waitMinutes)} הדקות האחרונות ואולי עוד משלמים` : '';
+    /* בימים הראשונים הכרטיס ״נטשו את העגלה״ למעלה (מהפיקסל) גדול מהרשימה, כי לפני היום הזה אף אחד לא נשמר */
+    const young = A.since && addDays(DATA.today, -(A.days - 1)) < A.since;
+    const sinceNote = young ? `<div class="as-note">${ic('info', 14)}<span>הדף שומר את מי שממלא את הטופס מ ${num(dm(A.since))}. מי שנטש לפני זה לא נשמר באף מקום, ולכן אין לו שורה כאן.</span></div>` : '';
     const empty = abTab === 'done' ? 'עוד לא פנית לאף אחד מהרשימה'
       : all.length ? 'פנית לכולם. כל הכבוד' : `אין נוטשים ב${n(A.days)} הימים האחרונים. מי שימלא את הטופס בדף ולא יקנה יופיע כאן`;
     const badge = todo.length ? `<span class="tag t-bad as-ab-count">${num(n(todo.length))} מחכים להודעה</span>` : '';
@@ -604,7 +607,7 @@
       <div class="utabs as-tabs"><button data-abt="todo" class="${abTab === 'todo' ? 'on' : ''}" type="button">מחכים להודעה<span class="n">${todo.length}</span></button><button data-abt="done" class="${abTab === 'done' ? 'on' : ''}" type="button">כבר פנית<span class="n">${done.length}</span></button></div>
       <div class="as-ab-list">${rows.slice(abPage * AB_PER_PAGE, abPage * AB_PER_PAGE + AB_PER_PAGE).map(abRow).join('') || `<div class="as-empty">${empty}</div>`}</div>
       ${pages > 1 ? `<div class="g-pg"><span>${num(n(abPage * AB_PER_PAGE + 1))} עד ${num(n(Math.min(rows.length, abPage * AB_PER_PAGE + AB_PER_PAGE)))} מתוך ${num(n(rows.length))}</span><div class="row" style="gap:6px"><button class="iconbtn" data-abpg="-1" type="button" aria-label="הקודם">${ic('chevron-right', 15)}</button><span class="n" style="font-size:12px">${abPage + 1}/${pages}</span><button class="iconbtn" data-abpg="1" type="button" aria-label="הבא">${ic('chevron-left', 15)}</button></div></div>` : ''}
-      <div class="as-err" id="abErr"></div></div>`;
+      ${sinceNote}<div class="as-err" id="abErr"></div></div>`;
     el.querySelectorAll('[data-abt]').forEach((b) => (b.onclick = () => { abTab = b.dataset.abt; abPage = 0; renderAbandon(); }));
     el.querySelectorAll('[data-abpg]').forEach((b) => (b.onclick = () => { abPage = Math.max(0, Math.min(pages - 1, abPage + Number(b.dataset.abpg))); renderAbandon(); }));
     /* הקישור נפתח כרגיל, והסימון קורה ברקע. בלי preventDefault, כדי שהחלון ייפתח גם בספארי */
