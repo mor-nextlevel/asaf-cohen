@@ -131,7 +131,7 @@
 
   /* The form shows its "moving to payment" line and sends the buyer to Asaf's Cardcom payment page (page 2),
      with name, email and phone already filled in there. Cardcom sends paid buyers on to /thanks. */
-  var PAY="https://secure.cardcom.solutions/EA/EA5/VTv4AkZh0ewBJ9NAcaCpw/PaymentSP";
+  var PAY="https://secure.cardcom.solutions/EA/EA5/jC2n0la0SNnkrrGmfEg/PaymentSP";
   d.querySelectorAll(".buyform").forEach(function(f){
     f.addEventListener("submit",function(e){ e.preventDefault(); if(!f.checkValidity()){ f.reportValidity(); return; }
       f.classList.add("sent"); if(window.fbq) fbq("track","InitiateCheckout",{value:297,currency:"ILS"});
