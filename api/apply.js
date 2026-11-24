@@ -14,7 +14,9 @@ const clip = (v, n = 300) => (typeof v === 'string' ? v.slice(0, n) : '');
 function clean(b) {
   const answers = {};
   for (const [k, v] of Object.entries(b.answers || {}).slice(0, 12)) {
-    if (/^[a-z]{2,16}$/.test(k) && v && typeof v === 'object') answers[k] = { i: Number(v.i) || 0, label: clip(v.label, 120) };
+    // שאלה עם כמה תשובות שולחת רשימת מספרים
+    const i = Array.isArray(v?.i) ? v.i.slice(0, 8).map(n => Number(n) || 0) : Number(v?.i) || 0;
+    if (/^[a-z]{2,16}$/.test(k) && v && typeof v === 'object') answers[k] = { i, label: clip(v.label, 400) };
   }
   const src = {};
   for (const [k, v] of Object.entries(b.src || {}).slice(0, 12)) if (/^[a-z_]{2,24}$/.test(k)) src[k] = clip(v, 200);
@@ -58,16 +60,19 @@ async function handle(req, res) {
     // כל השאלונים, רק עם הקוד שנמצא בהגדרות של ורסל
     const code = process.env.APPLY_CODE;
     if (!code || String(req.query.k || '') !== code) return res.status(401).json({ ok: false });
-    const out = [];
+    const ids = [];
     let cursor;
     do {
       const page = await list({ prefix: 'apply/', cursor, limit: 1000 });
-      for (const b of page.blobs) {
-        const rec = await read(b.pathname.slice(6, -5));
-        if (rec) out.push(rec);
-      }
+      for (const b of page.blobs) ids.push(b.pathname.slice(6, -5));
       cursor = page.hasMore ? page.cursor : undefined;
     } while (cursor);
+    // קוראים עשרים בכל פעם, כדי שהלוח ייפתח מהר גם כשיש הרבה שאלונים
+    const out = [];
+    for (let n = 0; n < ids.length; n += 20) {
+      const recs = await Promise.all(ids.slice(n, n + 20).map(id => read(id).catch(() => null)));
+      out.push(...recs.filter(Boolean));
+    }
     out.sort((a, b) => b.updated - a.updated);
     return res.json({ ok: true, count: out.length, rows: out });
   }
