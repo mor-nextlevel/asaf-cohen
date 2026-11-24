@@ -129,10 +129,12 @@
     });
   });
 
-  /* The form shows its "moving to payment" line and sends the buyer to Asaf's Grow payment page.
+  /* The form shows its "moving to payment" line and sends the buyer to Asaf's Cardcom payment page
+     (page 3, with the Make U order bump), with name, email and phone already filled in there.
+     Cardcom sends paid buyers on to /thanks.
      On the way it saves who filled it (api/lead.js), so whoever never pays shows up in Asaf's
      dashboard with a WhatsApp button. keepalive lets the save finish after the page has moved on. */
-  var PAY="https://pay.grow.link/Nzk1MTM~d197f274ef1748f00e284f5f3ff3ac1e-NDI0OTQ1Ng";
+  var PAY="https://secure.cardcom.solutions/EA/EA5/jC2n0la0SNnkrrGmfEg/PaymentSP";
   var SRC={}, qs=new URLSearchParams(location.search);
   ["utm_source","utm_medium","utm_campaign","utm_content","utm_term"].forEach(function(k){ var v=qs.get(k); if(v) SRC[k]=v; });
   function saveLead(f,i){
@@ -146,7 +148,9 @@
     f.addEventListener("submit",function(e){ e.preventDefault(); if(!f.checkValidity()){ f.reportValidity(); return; }
       saveLead(f,i);
       f.classList.add("sent"); if(window.fbq) fbq("track","InitiateCheckout",{value:297,currency:"ILS"});
-      setTimeout(function(){ location.href=PAY; },400); });
+      var v=function(n){ return f.querySelector("[name="+n+"]").value.trim(); }; /* f.name would be the form's own name, not the field */
+      var q="?ExtCInvoiceTo="+encodeURIComponent(v("name"))+"&ExtCUserEmail="+encodeURIComponent(v("email"))+"&ExtMobilPhone="+encodeURIComponent(v("phone").replace(/[^\d+]/g,""));
+      setTimeout(function(){ location.href=PAY+q; },400); });
   });
 
   var tick=false;
