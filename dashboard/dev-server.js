@@ -38,6 +38,8 @@ if (fs.existsSync(envFile)) {
 }
 const { default: handler } = await import('./api/data.js');
 const { default: abandonHandler } = await import('./api/abandon.js');
+const { default: premium } = await import('./api/premium.js');
+const ROUTES = { '/api/data': handler, '/api/abandon': abandonHandler, '/api/premium': premium };
 
 const TYPES = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
@@ -47,14 +49,14 @@ const TYPES = {
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
 
-  if (url.pathname === '/api/data' || url.pathname === '/api/abandon') {
+  if (ROUTES[url.pathname]) {
     // the two helpers Vercel adds to the response
     res.status = (code) => { res.statusCode = code; return res; };
     res.json = (body) => {
       res.setHeader('Content-Type', 'application/json; charset=utf-8');
       res.end(JSON.stringify(body));
     };
-    try { await (url.pathname === '/api/data' ? handler : abandonHandler)(req, res); } catch (e) { res.status(500).json({ ok: false, error: e.message }); }
+    try { await ROUTES[url.pathname](req, res); } catch (e) { res.status(500).json({ ok: false, error: e.message }); }
     return;
   }
 

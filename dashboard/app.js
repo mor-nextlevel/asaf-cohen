@@ -13,6 +13,11 @@
 
   const state = { preset: 'last_30_days', since: '', until: '' };
   let peopleTab = 'sales';
+  let prog = 'drop';
+  let PREM = null;
+  let premBusy = false;
+  let premFilter = 'all';
+  let premQuery = '';
   let peopleSort = { key: 'at', dir: -1 };
   let peoplePage = 0;
   let peopleQuery = '';
@@ -29,7 +34,7 @@
 
   /* הטווח והלשונית נשמרים, כדי שרענון לא יחזיר למקום אחר */
   function saveView() {
-    writeStore(KEY_VIEW, JSON.stringify({ preset: state.preset, since: state.since, until: state.until, tab: peopleTab }));
+    writeStore(KEY_VIEW, JSON.stringify({ preset: state.preset, since: state.since, until: state.until, tab: peopleTab, prog }));
   }
   function restoreView() {
     let v;
@@ -37,6 +42,7 @@
     if (!v || typeof v !== 'object') return;
     if (v.preset) { state.preset = v.preset; state.since = v.since || ''; state.until = v.until || ''; }
     if (v.tab) peopleTab = v.tab;
+    if (v.prog === 'prem') prog = 'prem';
   }
 
   /* ------------------------------ עיצוב מספרים ------------------------------ */
@@ -282,7 +288,7 @@
     document.getElementById('hdr').innerHTML = `<div class="cd h6">
       <div class="crumbs">${ic('house', 14)}<span>נקסט לבל</span>${ic('chevron-left', 13)}<span>אסף כהן</span>${ic('chevron-left', 13)}<b style="color:var(--ink)">לוח המעקב</b></div>
       <div class="ttl"><div class="row" style="gap:14px"><img class="as-av" src="/img/asaf.jpg" alt=""><div><h2 id="hdrTitle">לוח המעקב של אסף <span class="tag t-ok" id="hdrTag" style="font-size:12px">מתעדכן חי</span></h2><div class="cd-s" id="hdrSub" style="font-size:13.5px"></div></div></div>
-      <div class="row as-btns" style="gap:8px"><div id="picker"></div><button class="btn" id="btnRefresh" type="button">${ic('refresh-cw', 15)}רענון</button><button class="btn" id="btnExport" type="button">${ic('download', 15)}ייצוא</button></div></div>
+      <div class="row as-btns" style="gap:8px"><div class="seg as-prog" id="prog"><button data-p="drop" type="button">DROP 21</button><button data-p="prem" type="button">תוכנית הפרימיום</button></div><div id="picker"></div><button class="btn" id="btnRefresh" type="button">${ic('refresh-cw', 15)}רענון</button><button class="btn" id="btnExport" type="button">${ic('download', 15)}ייצוא</button></div></div>
       <div class="utabs"><button class="on" data-go="s-top" type="button">סקירה</button><button data-go="s-aband" type="button">נוטשים</button><button data-go="s-sales" type="button">מכירות</button><button data-go="s-ads" type="button">מודעות</button><button data-go="s-people" type="button">אנשים</button></div></div>`;
   }
 
@@ -654,10 +660,10 @@
     const t = text ? '&text=' + encodeURIComponent(text) : '';
     return (touch() ? 'whatsapp://send?phone=' : 'https://web.whatsapp.com/send?phone=') + num + t;
   }
-  function waLink(phone, label) {
-    const href = waHref(phone);
+  function waLink(phone, label, text, cls) {
+    const href = waHref(phone, text);
     if (!href) return '';
-    return `<a class="as-wa" href="${esc(href)}" target="whatsapp" rel="noopener">${ic('message-circle', 14)}${label}</a>`;
+    return `<a class="as-wa${cls ? ' ' + cls : ''}" href="${esc(href)}" target="whatsapp" rel="noopener">${ic('message-circle', 14)}${label}</a>`;
   }
 
   function statusTag(tab, p) {
@@ -742,15 +748,154 @@
     el.querySelectorAll('[data-pg]').forEach((bt) => (bt.onclick = () => { peoplePage = Math.max(0, Math.min(pages - 1, peoplePage + Number(bt.dataset.pg))); drawPeople(X); }));
   }
 
+  /* ---------------------------- תוכנית הפרימיום ---------------------------- */
+
+  /* השאלונים מהדף nl-asaf-cohen.vercel.app/apply. כל שאלון נשמר כבר מהכניסה הראשונה,
+     ולכן רואים גם מי שעצר באמצע ואפשר לחזור אליו. החדש למעלה */
+  const PQ = [
+    ['stage', 'מנגן מול קהל'],
+    ['production', 'רקע בהפקה'],
+    ['goal', 'מטרה לשנה'],
+    ['hours', 'שעות בשבוע'],
+    ['invest', 'מוכן להשקיע'],
+    ['link', 'קישור'],
+  ];
+  const INVEST_TAG = ['t-ok', 't-blue', 't-warn', 't-bad'];
+  const PFILTERS = [['all', 'כולם'], ['done', 'סיימו'], ['mid', 'באמצע'], ['now', 'מוכנים להתחיל עכשיו']];
+
+  const ilTime = (ms) => {
+    const P = {};
+    new Intl.DateTimeFormat('he-IL', { timeZone: 'Asia/Jerusalem', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })
+      .formatToParts(new Date(ms)).forEach((x) => (P[x.type] = x.value));
+    return `${P.day}.${P.month}, ${P.hour}:${P.minute}`;
+  };
+  const firstName = (p) => String((p.contact && p.contact.name) || '').trim().split(/\s+/)[0];
+
+  /* כמה מהשאלון מילא: השאלה הראשונה שעוד אין לה תשובה */
+  function premStep(p) {
+    if (p.done) return PQ.length;
+    let at = 0;
+    for (const [k] of PQ) {
+      const has = k === 'link' ? !!(p.link || p.noLink) : !!(p.answers && p.answers[k]);
+      if (!has) break;
+      at++;
+    }
+    return at;
+  }
+  function premStatus(p) {
+    const at = premStep(p);
+    if (p.done || at === PQ.length) return '<span class="tag t-ok">סיים</span>';
+    if (!at) return '<span class="tag t-gray">רק נכנס</span>';
+    return `<span class="tag t-warn">עצר בשאלה ${num(at + 1)}</span>`;
+  }
+  const ready = (p) => !!(p.answers && p.answers.invest && p.answers.invest.i === 0);
+
+  function premAnswer(p, k) {
+    if (k === 'link') {
+      if (p.noLink) return '<span class="muted">אין לו עדיין</span>';
+      const raw = String(p.link || '').trim();
+      if (!raw) return '<span class="muted">—</span>';
+      const href = /^https?:\/\//i.test(raw) ? raw : 'https://' + raw.replace(/^@/, 'instagram.com/');
+      return `<a class="pr-link" href="${esc(href)}" target="_blank" rel="noopener">${ic('link-2', 13)}<span>${esc(raw.replace(/^https?:\/\/(www\.)?/i, ''))}</span></a>`;
+    }
+    const a = p.answers && p.answers[k];
+    if (!a) return '<span class="muted">—</span>';
+    if (k === 'invest') return `<span class="tag ${INVEST_TAG[a.i] || 't-gray'}">${esc(a.label)}</span>`;
+    return esc(String(a.label || '').split(' | ').join(' · '));
+  }
+
+  function premCard(p) {
+    const c = p.contact || {}, f = firstName(p);
+    const wa = waLink(c.phone, 'וואטסאפ', f ? `היי ${f}, כאן אסף. ראיתי את השאלון שמילאת` : 'היי, כאן אסף. ראיתי את השאלון שמילאת', 'pr-wa');
+    return `<article class="cd pr-card">
+      <div class="pr-h"><div class="g-who">${av(c.name || '?', 36)}<div style="min-width:0"><b>${esc(c.name || 'בלי שם')}</b>${c.email ? `<span class="as-mail">${esc(c.email)}</span>` : ''}</div></div>${wa}</div>
+      <div class="pr-meta">${premStatus(p)}${c.phone ? `<span class="n as-ph">${esc(c.phone)}</span>` : ''}<span class="muted">${ic('clock', 13)}${num(ilTime(p.updated || p.started))}</span></div>
+      <dl class="pr-qa">${PQ.map(([k, l]) => `<dt>${l}</dt><dd>${premAnswer(p, k)}</dd>`).join('')}</dl>
+    </article>`;
+  }
+
+  function premRows() {
+    const all = (PREM && PREM.rows) || [];
+    const q = premQuery.trim().toLowerCase(), qd = q.replace(/\D/g, '');
+    return all.filter((p) => {
+      if (premFilter === 'done' && premStep(p) < PQ.length) return false;
+      if (premFilter === 'mid' && premStep(p) >= PQ.length) return false;
+      if (premFilter === 'now' && !ready(p)) return false;
+      if (!q) return true;
+      const c = p.contact || {};
+      return String(c.name || '').toLowerCase().includes(q) || String(c.email || '').toLowerCase().includes(q) ||
+        (qd.length >= 3 && String(c.phone || '').replace(/\D/g, '').includes(qd));
+    }).sort((a, b) => (b.updated || 0) - (a.updated || 0));
+  }
+
+  function renderPrem() {
+    const el = document.getElementById('s-prem');
+    if (!PREM) { el.innerHTML = '<div class="cd as-empty">טוען את השאלונים…</div>'; return; }
+    if (!PREM.ok) { el.innerHTML = `<div class="cd as-empty">${esc(PREM.error || 'השאלונים לא נטענו')}. אפשר ללחוץ רענון.</div>`; return; }
+    const all = PREM.rows || [];
+    const done = all.filter((p) => premStep(p) >= PQ.length).length;
+    const counts = { all: all.length, done, mid: all.length - done, now: all.filter(ready).length };
+    const card = (lab, v, sub) => `<div class="cd a6"><div class="lab">${lab}</div><div class="big2 n">${n(v)}</div><div class="row"><span class="sub">${sub}</span></div></div>`;
+    const t = PREM.generatedAt ? new Date(PREM.generatedAt).toLocaleTimeString('he-IL', { timeZone: 'Asia/Jerusalem', hour: '2-digit', minute: '2-digit' }) : '';
+    el.innerHTML = `<div class="cols c4">
+        ${card('נכנסו לשאלון', counts.all, 'מאז שהשאלון עלה')}
+        ${card('סיימו עד הסוף', counts.done, 'ענו על כל השאלות')}
+        ${card('עצרו באמצע', counts.mid, 'אפשר לחזור אליהם בוואטסאפ')}
+        ${card('מוכנים להתחיל עכשיו', counts.now, 'ענו ״כן, אני מוכן להתחיל עכשיו״')}
+      </div>
+      <div class="cd"><div class="cd-h"><div><div class="cd-t">${ic('clipboard-list', 17)} השאלונים של תוכנית הפרימיום</div><div class="cd-s">כל מי שהגיע לשאלון מהדף, מהחדש לישן${t ? ` · עודכן ${num(t)}` : ''}</div></div>
+        <div class="row" style="gap:8px;flex-wrap:wrap"><label class="as-search">${ic('search', 14)}<input class="as-in" id="premQ" type="search" placeholder="חיפוש שם או טלפון" value="${esc(premQuery)}"></label></div></div>
+        <div class="utabs as-tabs" id="premTabs">${PFILTERS.map(([k, l]) => `<button data-f="${k}" class="${k === premFilter ? 'on' : ''}" type="button">${l}<span class="n">${counts[k]}</span></button>`).join('')}</div>
+        <div class="pr-grid" id="premGrid"></div></div>`;
+    el.querySelectorAll('#premTabs button').forEach((b) => (b.onclick = () => { premFilter = b.dataset.f; renderPrem(); }));
+    const q = el.querySelector('#premQ');
+    q.oninput = () => { premQuery = q.value; drawPrem(); };
+    drawPrem();
+  }
+  function drawPrem() {
+    const rows = premRows(), all = (PREM && PREM.rows) || [];
+    document.getElementById('premGrid').innerHTML = rows.map(premCard).join('') ||
+      `<div class="as-empty">${PREM.missing ? 'השאלונים עוד לא מחוברים ללוח' : !all.length ? 'עוד אף אחד לא מילא את השאלון' : premQuery ? 'אף אחד לא מתאים לחיפוש' : 'אין כאן אף אחד'}</div>`;
+  }
+
+  function loadPrem() {
+    if (premBusy) return;
+    premBusy = true;
+    if (!PREM) renderPrem();
+    fetch('/api/premium?k=' + encodeURIComponent(code))
+      .then((r) => r.json().catch(() => ({ ok: false })))
+      .then((d) => { PREM = d; })
+      .catch(() => { PREM = PREM && PREM.ok ? PREM : { ok: false, error: 'אין חיבור' }; })
+      .then(() => { premBusy = false; if (prog === 'prem') renderPrem(); });
+  }
+
+  function applyProg() {
+    document.body.classList.toggle('prem', prog === 'prem');
+    document.querySelectorAll('#prog button').forEach((b) => b.classList.toggle('on', b.dataset.p === prog));
+    if (prog === 'prem') { renderPrem(); loadPrem(); }
+    else if (DATA && Date.now() - new Date(DATA.generatedAt).getTime() > AUTO_MS) load({ quiet: true });
+  }
+
+  function exportPrem() {
+    const rows = premRows();
+    const day = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Jerusalem' });
+    csv('premium', ['עודכן', 'שם', 'טלפון', 'מייל', 'מצב'].concat(PQ.map(([, l]) => l)),
+      rows.map((p) => {
+        const c = p.contact || {}, at = premStep(p);
+        return [ilTime(p.updated || p.started), c.name, c.phone, c.email, at >= PQ.length ? 'סיים' : at ? 'עצר בשאלה ' + (at + 1) : 'רק נכנס']
+          .concat(PQ.map(([k]) => (k === 'link' ? (p.noLink ? 'אין לו עדיין' : p.link || '') : (p.answers && p.answers[k] ? p.answers[k].label : ''))));
+      }), `premium-${day}.csv`);
+  }
+
   /* ---------------------------------- ייצוא --------------------------------- */
 
-  function csv(name, header, rows) {
+  function csv(name, header, rows, file) {
     const q = (v) => { const s = String(v === null || v === undefined ? '' : v); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
     const body = '﻿' + [header].concat(rows).map((r) => r.map(q).join(',')).join('\n');
     const a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([body], { type: 'text/csv;charset=utf-8' }));
-    const r = window.__X.cur.r;
-    a.download = `${name}-${r.since}-${r.until}.csv`;
+    const r = file ? null : window.__X.cur.r;
+    a.download = file || `${name}-${r.since}-${r.until}.csv`;
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(a.href), 2000);
   }
@@ -814,7 +959,10 @@
   document.addEventListener('click', (e) => {
     const pre = e.target.closest('.cdp-preset');
     if (pre) { prefetch(pre.dataset.preset); return; }
-    if (e.target.closest('#btnRefresh')) { load({ force: true }); return; }
+    const pg = e.target.closest('#prog button');
+    if (pg) { prog = pg.dataset.p; saveView(); applyProg(); return; }
+    if (e.target.closest('#btnRefresh')) { if (prog === 'prem') loadPrem(); else load({ force: true }); return; }
+    if (prog === 'prem' && e.target.closest('#btnExport')) { exportPrem(); return; }
     if (!DATA) return;
     if (e.target.closest('#btnExport')) { exportDays(); return; }
     if (e.target.closest('#btnAdsCsv')) { exportAds(); return; }
@@ -836,10 +984,10 @@
       if (document.hidden) return;
       const pop = document.getElementById('cdpPopup');
       if (pop && pop.classList.contains('open')) return;
-      load({ quiet: true });
+      if (prog === 'prem') loadPrem(); else load({ quiet: true });
     }, AUTO_MS);
     document.addEventListener('visibilitychange', () => {
-      if (document.hidden || !DATA) return;
+      if (document.hidden || !DATA || prog === 'prem') return;
       if (Date.now() - new Date(DATA.generatedAt).getTime() > AUTO_MS) load({ quiet: true });
     });
   }
@@ -852,6 +1000,7 @@
     document.getElementById('app').style.display = '';
     renderHeader();
     picker = window.CDP.create(state, () => { saveView(); load(); });
+    applyProg();
     load();
     startAuto();
   }
